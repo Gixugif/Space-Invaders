@@ -39,6 +39,10 @@ Enemy.prototype.update = function(dt) {
         this.x = allEnemies[this.num - 1].x + 135
     }
 
+    if (this.x > player.x && this.x < player.x + 131 && bullets.length < 5) {
+        this.shoot();
+    }
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -51,7 +55,7 @@ Enemy.prototype.move = function() {
 };
 
 Enemy.prototype.shoot = function() {
-
+     bullets.push(new Bullet(this.x,this.y,"enemy",bullets.length));
 };
 
 var calcHeight = function (count) {
@@ -110,18 +114,19 @@ Player.prototype.handleInput = function(input) {
 };
 
 Player.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x,this.y,"player"));
+    bullets.push(new Bullet(this.x,this.y,"player", bullets.length));
 
 
 };
 
 // Bullet class
-var Bullet = function(posX,posY,type) {
+var Bullet = function(posX,posY,type, num) {
     this.x = posX;
     this.y = posY;
     this.dx = 0;
     this.dy = 0;
     this.type = type;
+    this.num = num;
     this.sprite = 'images/bullet.png';
 };
 
@@ -134,9 +139,9 @@ Bullet.prototype.render = function() {
 };
 
 Bullet.prototype.move = function() {
-    if (type = "player") {
+    if (this.type === "player") {
         this.dy = -200;
-    } else if (type = "enemy") {
+    } else if (this.type === "enemy") {
         this.dy = 200;
     }
 }

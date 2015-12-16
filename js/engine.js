@@ -100,7 +100,12 @@ var Engine = (function(global) {
         bullets.forEach(function(bullet) {
             bullet.move();
             bullet.update(dt);
+            if (bullet.y > 900 || bullet.y < 0) {
+                bullets.splice(this.num,1);
+                console.log(bullets.length);
+            }
         });
+
         player.update(dt);
     }
 
