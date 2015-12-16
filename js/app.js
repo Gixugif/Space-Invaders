@@ -1,16 +1,18 @@
 var ENEMY_DX = 1;
 
+
 Object.prototype.isEmpty = function() {
     for (var prop in this) if (this.hasOwnProperty(prop)) return false;
     return true;
 };
 
 // Enemy Class
-var Enemy = function(posX, posY) {
+var Enemy = function(posX, posY, num) {
     this.x = posX;
     this.y = posY;
     this.dy = 0;
     this.dx = 1;
+    this.num = num;
     this.population = 56;
     this.sprite = 'images/enemy1.png';
 };
@@ -24,6 +26,14 @@ Enemy.prototype.update = function(dt) {
 
     if (this.x >= 1200 - 91 || this.x <= 0) {
         ENEMY_DX = -ENEMY_DX;
+    }
+
+    if (this.num > 7) {
+        this.x = allEnemies[this.num - 8].x;
+    }
+
+    if (this.num % 8 > 0) {
+        this.x = allEnemies[this.num - 1].x + 135
     }
 
 };
@@ -173,7 +183,7 @@ var bullets = []
 var player = new Player();
 //var hud = new HUD();
 
-for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x)); }
+for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
 
 
 // This listens for key presses and sends the keys to your
