@@ -1,5 +1,5 @@
 var ENEMY_DX = 1;
-
+var ENEMY_DY = 20;
 
 Object.prototype.isEmpty = function() {
     for (var prop in this) if (this.hasOwnProperty(prop)) return false;
@@ -26,6 +26,9 @@ Enemy.prototype.update = function(dt) {
 
     if (this.x >= 1200 - 91 || this.x <= 0) {
         ENEMY_DX = -ENEMY_DX;
+        allEnemies.forEach(function(allEnemy) {
+        allEnemy.y += ENEMY_DY;
+        });
     }
 
     if (this.num > 7) {
