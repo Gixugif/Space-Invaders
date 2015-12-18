@@ -31,6 +31,8 @@ Enemy.prototype.update = function(dt) {
         });
     }
 
+	// Enemies will come out of alignment due to position not updating
+	// at exacty the same time. This will keep them aligned
     if (this.num > 7) {
         this.x = allEnemies[this.num - 8].x;
     }
@@ -39,10 +41,12 @@ Enemy.prototype.update = function(dt) {
         this.x = allEnemies[this.num - 1].x + 135
     }
 
-    if (this.x > player.x && this.x < player.x + 131 && bullets.length < 5) {
+	// Balance enemy shooting by having each enemy only have a small
+	// chance of firing
+    var rand = Math.floor((Math.random() * 2500) + 1);
+	if (rand === this.num) {
         this.shoot();
-    }
-
+	}
 };
 
 // Draw the enemy on the screen, required method for game
