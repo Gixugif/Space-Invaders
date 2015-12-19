@@ -28,6 +28,7 @@ Enemy.prototype.update = function(dt) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
         allEnemy.y += ENEMY_DY;
+        allEnemy.x += ENEMY_DX;
         });
     }
 
@@ -249,7 +250,6 @@ function keyboard_module(onUpdate){
 function testing(kb){
     console.log('These are the down keys', kb);
 }
-
 
 var keyboard = keyboard_module();
 
