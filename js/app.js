@@ -152,7 +152,7 @@ Bullet.prototype.move = function() {
 
 
 // Barrier class
-var Barrier = function() {
+var Barrier = function(posX, posY) {
     this.x = posX
     this.y = posY;
     this.heath = 10;
@@ -165,7 +165,7 @@ Barrier.prototype.update = function() {
 };
 
 Barrier.prototype.render= function() {
-
+    ctx.drawImage(Resources.get(this.sprite),this.x, this.y);
 };
 
 
@@ -196,7 +196,7 @@ var player = new Player();
 //var hud = new HUD();
 
 for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
-
+for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
