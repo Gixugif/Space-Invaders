@@ -14,6 +14,8 @@ var Enemy = function(posX, posY, num) {
     this.dx = 1;
     this.num = num;
     this.population = 56;
+    this.width = 73;
+    this.height = 65;
     this.sprite = 'images/enemy1.png';
 };
 
@@ -87,6 +89,8 @@ var Player = function() {
     this.y = 800;
     this.dx = 0;
     this.dy = 0;
+    this.width = 131;
+    this.height = 92;
     this.lives = 3;
     this.score = 0;
 };
@@ -101,7 +105,7 @@ Player.prototype.update = function(dt) {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,131,92);
 };
 
 Player.prototype.handleInput = function(input) {
@@ -120,8 +124,6 @@ Player.prototype.handleInput = function(input) {
 
 Player.prototype.shoot = function() {
     bullets.push(new Bullet(this.x,this.y,"player", bullets.length));
-
-
 };
 
 // Bullet class
@@ -130,6 +132,8 @@ var Bullet = function(posX,posY,type, num) {
     this.y = posY;
     this.dx = 0;
     this.dy = 0;
+    this.width = 92;
+    this.height = 92;
     this.type = type;
     this.num = num;
     this.sprite = 'images/bullet.png';
@@ -156,6 +160,8 @@ Bullet.prototype.move = function() {
 var Barrier = function(posX, posY) {
     this.x = posX
     this.y = posY;
+    this.width = 115;
+    this.height = 81;
     this.heath = 10;
     this.sprite = 'images/barrier_full.png';
 
@@ -248,7 +254,17 @@ function keyboard_module(onUpdate){
 }
 
 function testing(kb){
-    console.log('These are the down keys', kb);
+    //console.log('These are the down keys', kb);
+}
+
+function collisionTest(obj1,obj2) {
+
+    if (obj1.x < obj2.x + obj2.width &&
+       obj1.x + obj1.width > obj2.x &&
+       obj1.y < obj2.y + obj2.height &&
+       obj1.height + obj1.y > obj2.y) {
+        console.log("collision!");
+    }
 }
 
 var keyboard = keyboard_module();
