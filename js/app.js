@@ -176,8 +176,12 @@ Barrier.prototype.update = function() {
         this.display = false;
     }else if (this.health <= 2) {
         this.sprite = 'images/barrier_most.png';
+        this.width = 90;
+        this.height = 52;
     } else if (this.health <= 4) {
         this.sprite = 'images/barrier_serious.png';
+        this.width = 90;
+        this.height = 57;
     } else if (this.health <= 6) {
         this.sprite = 'images/barrier_more.png';
     } else if (this.health <= 8) {
@@ -186,7 +190,7 @@ Barrier.prototype.update = function() {
 };
 
 Barrier.prototype.render= function() {
-    ctx.drawImage(Resources.get(this.sprite),this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite),this.x + (92 - this.width), this.y + (69 - this.height));
 };
 
 
