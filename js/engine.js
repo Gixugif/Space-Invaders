@@ -104,7 +104,15 @@ var Engine = (function(global) {
                         enemy.display = false;
                     }
                 }
-            })
+            });
+
+            if (enemy.y > (725 - enemy.height) && enemy.display === true) {
+                barriers.forEach(function(barrier) {
+                    if (collisionTest(enemy,barrier)) {
+                        enemy.display = false;
+                    }
+                });
+            }
         });
 
         bullets.forEach(function(bullet) {
