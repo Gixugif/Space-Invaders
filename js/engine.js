@@ -96,17 +96,28 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
+
+            bullets.forEach(function(bullet) {
+                if (bullet.type === "player" && enemy.display === true) {
+                    if (collisionTest(enemy,bullet)) {
+                        bullets.splice(bullet.num,1);
+                        enemy.display = false;
+                    }
+                }
+            })
         });
+
         bullets.forEach(function(bullet) {
             bullet.move();
             bullet.update(dt);
             if (bullet.y > 900 || bullet.y < 0) {
                 bullets.splice(this.num,1);
-                console.log(bullets.length);
             }
         });
 
         player.update(dt);
+
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -137,11 +148,16 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+
         bullets.forEach(function(bullet) {
             bullet.render();
         });
 
         player.render();
+
+        barriers.forEach(function(barrier) {
+            barrier.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to

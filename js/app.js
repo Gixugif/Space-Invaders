@@ -16,6 +16,7 @@ var Enemy = function(posX, posY, num) {
     this.population = 56;
     this.width = 73;
     this.height = 65;
+    this.display = true;
     this.sprite = 'images/enemy1.png';
 };
 
@@ -54,7 +55,9 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.display === true) {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 };
 
 Enemy.prototype.move = function() {
@@ -264,6 +267,7 @@ function collisionTest(obj1,obj2) {
        obj1.y < obj2.y + obj2.height &&
        obj1.height + obj1.y > obj2.y) {
         console.log("collision!");
+        return true;
     }
 }
 
