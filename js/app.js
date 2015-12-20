@@ -48,7 +48,7 @@ Enemy.prototype.update = function(dt) {
 	// Balance enemy shooting by having each enemy only have a small
 	// chance of firing
     var rand = Math.floor((Math.random() * 2500) + 1);
-	if (rand === this.num) {
+	if (rand === this.num && this.display === true) {
         this.shoot();
 	}
 };
