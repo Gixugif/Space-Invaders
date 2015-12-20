@@ -92,8 +92,8 @@ var Player = function() {
     this.y = 800;
     this.dx = 0;
     this.dy = 0;
-    this.width = 112;
-    this.height = 76;
+    this.width = 77;
+    this.height = 52;
     this.lives = 3;
     this.score = 0;
 };
