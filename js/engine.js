@@ -13,6 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
+
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -25,9 +26,9 @@ var Engine = (function(global) {
         lastTime;
 
 
-    canvas.width = 1200;
-    canvas.height = 900;
-    doc.body.appendChild(canvas);
+        canvas.width = 1200;
+        canvas.height =900;
+        doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -98,8 +99,8 @@ var Engine = (function(global) {
 
             bullets.forEach(function(bullet) {
                 if (bullet.type === "player" && enemy.display === true) {
-                    if (collisionTest(enemy, bullet)) {
-                        bullets.splice(bullet.num, 1);
+                    if (collisionTest(enemy,bullet)) {
+                        bullets.splice(bullet.num,1);
                         enemy.display = false;
                     }
                 }
@@ -110,7 +111,7 @@ var Engine = (function(global) {
             bullet.move();
             bullet.update(dt);
             if (bullet.y > 900 || bullet.y < 0) {
-                bullets.splice(this.num, 1);
+                bullets.splice(this.num,1);
             }
         });
 
@@ -129,7 +130,7 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-        ctx.rect(0, 0, canvas.width, canvas.height);
+        ctx.rect(0,0,canvas.width,canvas.height);
         ctx.fillStyle = 'black';
         ctx.fill();
         renderEntities();
