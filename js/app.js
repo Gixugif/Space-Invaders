@@ -2,8 +2,7 @@ var ENEMY_DX = 1;
 var ENEMY_DY = 20;
 
 Object.prototype.isEmpty = function() {
-    for (var prop in this)
-        if (this.hasOwnProperty(prop)) return false;
+    for (var prop in this) if (this.hasOwnProperty(prop)) return false;
     return true;
 };
 
@@ -31,13 +30,13 @@ Enemy.prototype.update = function(dt) {
     if (this.x >= 1200 - 91 || this.x <= 0) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
-            allEnemy.y += ENEMY_DY;
-            allEnemy.x += ENEMY_DX;
+        allEnemy.y += ENEMY_DY;
+        allEnemy.x += ENEMY_DX;
         });
     }
 
-    // Enemies will come out of alignment due to position not updating
-    // at exacty the same time. This will keep them aligned
+	// Enemies will come out of alignment due to position not updating
+	// at exacty the same time. This will keep them aligned
     if (this.num > 7) {
         this.x = allEnemies[this.num - 8].x;
     }
@@ -46,12 +45,12 @@ Enemy.prototype.update = function(dt) {
         this.x = allEnemies[this.num - 1].x + 135
     }
 
-    // Balance enemy shooting by having each enemy only have a small
-    // chance of firing
+	// Balance enemy shooting by having each enemy only have a small
+	// chance of firing
     var rand = Math.floor((Math.random() * 2500) + 1);
-    if (rand === this.num) {
+	if (rand === this.num) {
         this.shoot();
-    }
+	}
 };
 
 // Draw the enemy on the screen, required method for game
@@ -66,23 +65,23 @@ Enemy.prototype.move = function() {
 };
 
 Enemy.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x, this.y, 'enemy', bullets.length));
+     bullets.push(new Bullet(this.x,this.y,"enemy",bullets.length));
 };
 
-var calcHeight = function(count) {
-    if (count <= 8) {
-        return 50;
-    } else if (count <= 16) {
-        return 70 + 81;
-    } else if (count <= 24) {
-        return 90 + (2 * 81);
-    } else if (count <= 32) {
-        return 110 + (3 * 81);
-    } else if (count <= 40) {
-        return 130 + (4 * 81);
-    } else if (count <= 48) {
-        return 150 + (5 * 81);
-    }
+var calcHeight = function (count) {
+   if (count <= 8) {
+    return 50;
+   } else if (count <= 16) {
+    return 70 + 81;
+   } else if (count <= 24) {
+    return 90 + (2 * 81);
+   } else if (count <= 32) {
+    return 110 + (3 * 81);
+   } else if (count <= 40) {
+    return 130 + (4 * 81);
+   } else if (count <= 48) {
+    return 150 + (5 * 81);
+   }
 }
 
 
@@ -109,7 +108,7 @@ Player.prototype.update = function(dt) {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 131, 92);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,131,92);
 };
 
 Player.prototype.handleInput = function(input) {
@@ -127,11 +126,11 @@ Player.prototype.handleInput = function(input) {
 };
 
 Player.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x, this.y, 'player', bullets.length));
+    bullets.push(new Bullet(this.x,this.y,"player", bullets.length));
 };
 
 // Bullet class
-var Bullet = function(posX, posY, type, num) {
+var Bullet = function(posX,posY,type, num) {
     this.x = posX;
     this.y = posY;
     this.dx = 0;
@@ -148,13 +147,13 @@ Bullet.prototype.update = function(dt) {
 };
 
 Bullet.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite),this.x, this.y);
 };
 
 Bullet.prototype.move = function() {
     if (this.type === "player") {
         this.dy = -200;
-    } else if (this.type === 'enemy') {
+    } else if (this.type === "enemy") {
         this.dy = 200;
     }
 }
@@ -175,8 +174,8 @@ Barrier.prototype.update = function() {
 
 };
 
-Barrier.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+Barrier.prototype.render= function() {
+    ctx.drawImage(Resources.get(this.sprite),this.x, this.y);
 };
 
 
@@ -206,12 +205,8 @@ var bullets = []
 var player = new Player();
 //var hud = new HUD();
 
-for (var x = 0; x < 49; x++) {
-    allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
-}
-for (var x = 0; x < 3; x++) {
-    barriers[x] = new Barrier(230 + (x * 300), 725)
-}
+for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
+for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -229,51 +224,52 @@ document.addEventListener('keydown', function(e) {
 
 // keyboard_module by RobKohr
 // Properly handles when a key is held down and then released
-function keyboard_module(onUpdate) {
+function keyboard_module(onUpdate){
     var kb = {};
     var unicode_mapping = {};
-    document.onkeydown = function(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode
+    document.onkeydown = function(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
         var key = getKey(unicode);
         kb[key] = true;
-        if (onUpdate) {
+        if(onUpdate){
             onUpdate(kb);
         }
     }
 
-    document.onkeyup = function(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode
+    document.onkeyup = function(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
         var key = getKey(unicode);
         delete kb[key];
-        if (onUpdate) {
+        if(onUpdate){
             onUpdate(kb);
         }
     }
 
-    function getKey(unicode) {
-        if (unicode_mapping[unicode]) {
+    function getKey(unicode){
+        if(unicode_mapping[unicode]){
             var key = unicode_mapping[unicode];
-        } else {
-            var key = unicode_mapping[unicode] = String.fromCharCode(unicode);
+        }else{
+            var key= unicode_mapping[unicode] = String.fromCharCode(unicode);
         }
         return key;
     }
     return kb;
 }
 
-function testing(kb) {
+function testing(kb){
     //console.log('These are the down keys', kb);
 }
 
-function collisionTest(obj1, obj2) {
+function collisionTest(obj1,obj2) {
 
     if (obj1.x < obj2.x + obj2.width &&
-        obj1.x + obj1.width > obj2.x &&
-        obj1.y < obj2.y + obj2.height &&
-        obj1.height + obj1.y > obj2.y) {
+       obj1.x + obj1.width > obj2.x &&
+       obj1.y < obj2.y + obj2.height &&
+       obj1.height + obj1.y > obj2.y) {
         console.log("collision!");
         return true;
     }
 }
 
 var keyboard = keyboard_module();
+
