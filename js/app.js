@@ -165,13 +165,24 @@ var Barrier = function(posX, posY) {
     this.y = posY;
     this.width = 92;
     this.height = 69;
-    this.heath = 10;
+    this.health = 10;
+    this.display = true;
     this.sprite = 'images/barrier_full.png';
 
 };
 
 Barrier.prototype.update = function() {
-
+    if (this.health === 0) {
+        this.display = false;
+    }else if (this.health <= 2) {
+        this.sprite = 'images/barrier_most.png';
+    } else if (this.health <= 4) {
+        this.sprite = 'images/barrier_serious.png';
+    } else if (this.health <= 6) {
+        this.sprite = 'images/barrier_more.png';
+    } else if (this.health <= 8) {
+        this.sprite = 'images/barrier_slight.png';
+    }
 };
 
 Barrier.prototype.render= function() {

@@ -108,9 +108,12 @@ var Engine = (function(global) {
 
             if (enemy.y > (725 - enemy.height) && enemy.display === true) {
                 barriers.forEach(function(barrier) {
-                    if (collisionTest(enemy,barrier)) {
+                    if (collisionTest(enemy,barrier) && barrier.display === true) {
                         enemy.display = false;
+                        barrier.health -= 1;
+                        console.log(barrier.health);
                     }
+                    barrier.update();
                 });
             }
         });
@@ -164,7 +167,9 @@ var Engine = (function(global) {
         player.render();
 
         barriers.forEach(function(barrier) {
-            barrier.render();
+            if (barrier.display === true) {
+                barrier.render();
+            }
         });
     }
 
@@ -185,6 +190,10 @@ var Engine = (function(global) {
         'images/enemy1.png',
         'images/player.png',
         'images/barrier_full.png',
+        'images/barrier_slight.png',
+        'images/barrier_more.png',
+        'images/barrier_serious.png',
+        'images/barrier_most.png',
         'images/bullet.png'
     ]);
     Resources.onReady(init);
