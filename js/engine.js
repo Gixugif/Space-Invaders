@@ -47,6 +47,7 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         player.handleInput(null);
+        collisions();
         update(dt);
         render();
 
@@ -94,40 +95,21 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-
-            bullets.forEach(function(bullet) {
-                if (bullet.type === "player" && enemy.display === true) {
-                    if (collisionTest(enemy,bullet)) {
-                        bullets.splice(bullet.num,1);
-                        enemy.display = false;
-                    }
-                }
-            });
-
-            if (enemy.y > (725 - enemy.height) && enemy.display === true) {
-                barriers.forEach(function(barrier) {
-                    if (collisionTest(enemy,barrier) && barrier.display === true) {
-                        enemy.display = false;
-                        barrier.health -= 1;
-                        console.log(barrier.health);
-                    }
-                    barrier.update();
-                });
-            }
-        });
-
-        bullets.forEach(function(bullet) {
-            bullet.move();
-            bullet.update(dt);
-            if (bullet.y > 900 || bullet.y < 0) {
-                bullets.splice(this.num,1);
-            }
-        });
 
         player.update(dt);
 
+        allEnemies.forEach(function(enemy){
+            enemy.update(dt);
+        });
+
+        bullets.forEach(function(bullet){
+            bullet.move();
+            bullet.update(dt);
+        });
+
+        barriers.forEach(function(barrier){
+            barrier.update(dt);
+        });
 
     }
 
@@ -167,11 +149,34 @@ var Engine = (function(global) {
         player.render();
 
         barriers.forEach(function(barrier) {
-            if (barrier.display === true) {
-                barrier.render();
-            }
+            barrier.render();
         });
     }
+
+    function collisions() {
+
+        delBullets = [];
+
+        allEnemies.forEach(function(enemy) {
+           var collisionNum = enemy.testCollision(enemy);
+
+            if (collisionNum !== -1) {
+            delBullets.push(collisionNum);
+           }
+        });
+
+        bullets.forEach(function(bullet) {
+           var collisionNum = (bullet.testCollision(bullet));
+
+           if (collisionNum !== -1) {
+            delBullets.push(collisionNum);
+           }
+        });
+
+        deleteBullets(delBullets);
+
+    }
+
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
@@ -186,7 +191,6 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/char-boy.png',
         'images/enemy1.png',
         'images/player.png',
         'images/barrier_full.png',

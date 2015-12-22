@@ -68,6 +68,41 @@ Enemy.prototype.shoot = function() {
      bullets.push(new Bullet(this.x,this.y,"enemy",bullets.length));
 };
 
+Enemy.prototype.testCollision = function(enemy) {
+
+    var collisionNum = -1
+
+    bullets.forEach(function(bullet) {
+
+        if (bullet.type === "player" && enemy.display === true) {
+
+            if (collisionTest(enemy,bullet)) {
+                enemy.display = false;
+                collisionNum = bullet.num;
+            }
+        }
+
+
+        if (enemy.y > (725 - enemy.height) && enemy.display === true) {
+            barriers.forEach(function(barrier) {
+
+                if (collisionTest(enemy,barrier) && barrier.display === true) {
+                    enemy.display = false;
+                    barrier.health -= 1;
+                }
+            });
+        }
+
+    });
+
+    if (collisionTest(enemy,player)) {
+        enemy.display = false;
+        player.live -= 1;
+    }
+
+    return collisionNum;
+}
+
 var calcHeight = function (count) {
    if (count <= 8) {
     return 50;
@@ -158,6 +193,36 @@ Bullet.prototype.move = function() {
     }
 }
 
+Bullet.prototype.testCollision = function(bullet) {
+
+    var collisionNum = -1;
+
+    if (bullet.y > 900 || bullet.y < 0) {
+        collisionNum = bullet.num;
+    }
+
+    if (bullet.type === 'enemy' && bullet.y > 700) {
+
+        if (collisionTest(player,bullet)) {
+            player.lives -= 1;
+            collisionNum = bullet.num;
+        }
+    }
+
+    if (bullet.y > 650) {
+
+        barriers.forEach(function(barrier) {
+
+            if (collisionTest(bullet,barrier) && barrier.display === true) {
+                barrier.health -= 1;
+                collisionNum = bullet.num;
+            }
+        });
+    }
+
+    return collisionNum;
+}
+
 
 // Barrier class
 var Barrier = function(posX, posY) {
@@ -190,9 +255,12 @@ Barrier.prototype.update = function() {
 };
 
 Barrier.prototype.render= function() {
-    ctx.drawImage(Resources.get(this.sprite),this.x + (92 - this.width), this.y + (69 - this.height));
+    if (this.display === true) {
+        // we take the difference between the current and original dimensions in order
+        // to stop them from shifting around
+        ctx.drawImage(Resources.get(this.sprite),this.x + (92 - this.width), this.y + (69 - this.height));
+    }
 };
-
 
 // HUD class
 var HUD = function() {
@@ -276,13 +344,22 @@ function testing(kb){
 }
 
 function collisionTest(obj1,obj2) {
-
     if (obj1.x < obj2.x + obj2.width &&
-       obj1.x + obj1.width > obj2.x &&
-       obj1.y < obj2.y + obj2.height &&
-       obj1.height + obj1.y > obj2.y) {
-        console.log("collision!");
-        return true;
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.height + obj1.y > obj2.y) {
+
+            return true;
+        }
+    }
+
+function deleteBullets(nums) {
+    nums.forEach(function(num) {
+        bullets.splice(num,1);
+    });
+
+    for (var i = 0; i < bullets.length; i++) {
+        bullets[i].num = i;
     }
 }
 
