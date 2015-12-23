@@ -161,7 +161,7 @@ Player.prototype.handleInput = function(input) {
 };
 
 Player.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x,this.y,"player", bullets.length));
+    bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height,"player", bullets.length));
 };
 
 // Bullet class
