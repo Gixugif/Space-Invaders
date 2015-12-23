@@ -98,7 +98,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
     });
 
-    if (collisionTest(enemy,player)) {
+    if (collisionTest(enemy,player) && this.display === true) {
         enemy.display = false;
         player.live -= 1;
 
