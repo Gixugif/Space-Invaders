@@ -77,6 +77,7 @@ Enemy.prototype.testCollision = function(enemy) {
         if (bullet.type === "player" && enemy.display === true) {
 
             if (collisionTest(enemy,bullet)) {
+                player.shot = false;
                 enemy.display = false;
                 collisionNum = bullet.num;
             }
@@ -131,6 +132,7 @@ var Player = function() {
     this.height = 52;
     this.lives = 3;
     this.score = 0;
+    this.shot = false;
 };
 
 Player.prototype.update = function(dt) {
@@ -161,7 +163,11 @@ Player.prototype.handleInput = function(input) {
 };
 
 Player.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height,"player", bullets.length));
+    if (this.shot === false) {
+        console.log(this.shot);
+        bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height,"player", bullets.length));
+        this.shot = true;
+    }
 };
 
 // Bullet class
@@ -199,6 +205,10 @@ Bullet.prototype.testCollision = function(bullet) {
 
     if (bullet.y > 900 || bullet.y < 0) {
         collisionNum = bullet.num;
+
+        if (bullet.type === "player") {
+            player.shot = false;
+        }
     }
 
     if (bullet.type === 'enemy' && bullet.y > 700) {
@@ -216,6 +226,10 @@ Bullet.prototype.testCollision = function(bullet) {
             if (collisionTest(bullet,barrier) && barrier.display === true) {
                 barrier.health -= 1;
                 collisionNum = bullet.num;
+                console.log(this.type);
+                if (bullet.type === "player") {
+                    player.shot = false;
+                 }
             }
         });
     }
