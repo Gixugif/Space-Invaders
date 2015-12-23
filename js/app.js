@@ -124,7 +124,7 @@ var calcHeight = function (count) {
 var Player = function() {
     this.sprite = 'images/player.png';
     this.x = 600;
-    this.y = 800;
+    this.y = 820;
     this.dx = 0;
     this.dy = 0;
     this.width = 77;
@@ -143,7 +143,7 @@ Player.prototype.update = function(dt) {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,131,92);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(input) {
