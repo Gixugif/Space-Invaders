@@ -47,28 +47,40 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         player.handleInput(null);
-        collisions();
-        update(dt);
+
+
+
+
+        if (Start === 1) {
+            update(dt);
+            var state = collisions();
+        }
+
         render();
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
-         */
+        */
         lastTime = now;
+
+        if (state > 0) {
+            init(state);
+        }
 
 
         /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
+        * function again as soon as the browser is able to draw another frame.
+        */
         win.requestAnimationFrame(main);
+
     }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
-    function init() {
-        reset();
+    function init(state) {
+        reset(state);
         lastTime = Date.now();
         main();
     }
@@ -156,24 +168,36 @@ var Engine = (function(global) {
     function collisions() {
 
         delBullets = [];
+        var collisionResults = []
+        var resetState = 0;
 
         allEnemies.forEach(function(enemy) {
-           var collisionNum = enemy.testCollision(enemy);
+           collisionResults = enemy.testCollision(enemy);
 
-            if (collisionNum !== -1) {
-            delBullets.push(collisionNum);
+            if (collisionResults[0] !== -1) {
+            delBullets.push(collisionResults[0]);
+           }
+
+           if (collisionResults[1] !== 0) {
+                resetState = collisionResults[1];
            }
         });
 
         bullets.forEach(function(bullet) {
-           var collisionNum = (bullet.testCollision(bullet));
+            collisionResults = bullet.testCollision(bullet);
 
-           if (collisionNum !== -1) {
-            delBullets.push(collisionNum);
+           if (collisionResults[0] !== -1) {
+            delBullets.push(collisionResults[0]);
            }
+
+           if (collisionResults[1] !== 0) {
+                resetState = collisionResults[1];
+           }
+
         });
 
         deleteBullets(delBullets);
+        return resetState;
 
     }
 
@@ -182,8 +206,31 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
-        // noop
+    function reset(state) {
+        var bullets = []
+
+        if (state === 1) {
+            allEnemies = [];
+            barriers = [];
+
+            player = new Player();
+
+            for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
+            for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
+            Start = 0;
+        } else if (state === 2) {
+            player.x = (500) + (77 / 2);
+            player.y = 820;
+
+            for (var x = 0; x < 49; x++) {
+                allEnemies[x].x = (91 + 135 * (x % 8));
+                allEnemies[x].y = calcHeight(x);
+            }
+
+            Start = 0;
+
+        }
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to

@@ -1,5 +1,6 @@
 var ENEMY_DX = 1;
 var ENEMY_DY = 20;
+var Start = 0;
 
 Object.prototype.isEmpty = function() {
     for (var prop in this) if (this.hasOwnProperty(prop)) return false;
@@ -71,6 +72,7 @@ Enemy.prototype.shoot = function() {
 Enemy.prototype.testCollision = function(enemy) {
 
     var collisionNum = -1
+    var state = 0;
 
     bullets.forEach(function(bullet) {
 
@@ -99,9 +101,15 @@ Enemy.prototype.testCollision = function(enemy) {
     if (collisionTest(enemy,player)) {
         enemy.display = false;
         player.live -= 1;
+
+        if (player.lives > 0) {
+                state = 2;
+            } else {
+                state = 1;
+            }
     }
 
-    return collisionNum;
+    return [collisionNum,state];
 }
 
 var calcHeight = function (count) {
@@ -124,7 +132,7 @@ var calcHeight = function (count) {
 // Player Class
 var Player = function() {
     this.sprite = 'images/player.png';
-    this.x = 600;
+    this.x = (500) + (77 / 2);
     this.y = 820;
     this.dx = 0;
     this.dy = 0;
@@ -149,17 +157,22 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(input) {
+
     if (keyboard['\%']) {
         this.dx = -100;
+        Start = 1;
     } else if (keyboard["'"]) {
         this.dx = 100;
+        Start = 1;
     } else if (keyboard.isEmpty) {
         this.dx = 0;
     }
 
     if (input === 'ctrl') {
         this.shoot();
+        Start = 1;
     }
+
 };
 
 Player.prototype.shoot = function() {
@@ -201,6 +214,7 @@ Bullet.prototype.move = function() {
 Bullet.prototype.testCollision = function(bullet) {
 
     var collisionNum = -1;
+    var state = 0;
 
     if (bullet.y > 900 || bullet.y < 0) {
         collisionNum = bullet.num;
@@ -215,6 +229,12 @@ Bullet.prototype.testCollision = function(bullet) {
         if (collisionTest(player,bullet)) {
             player.lives -= 1;
             collisionNum = bullet.num;
+
+            if (player.lives > 0) {
+                state = 2;
+            } else {
+                state = 1;
+            }
         }
     }
 
@@ -233,7 +253,7 @@ Bullet.prototype.testCollision = function(bullet) {
         });
     }
 
-    return collisionNum;
+    return [collisionNum,state];
 }
 
 
@@ -301,7 +321,7 @@ var bullets = []
 var player = new Player();
 //var hud = new HUD();
 
-for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
+for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
 for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
 
 // This listens for key presses and sends the keys to your
