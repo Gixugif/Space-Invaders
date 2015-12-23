@@ -27,7 +27,7 @@ Enemy.prototype.update = function(dt) {
     this.x += movement;
     this.y += this.dy * dt;
 
-    if (this.x >= 1200 - 91 || this.x <= 0) {
+    if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
         allEnemy.y += ENEMY_DY;
@@ -164,7 +164,6 @@ Player.prototype.handleInput = function(input) {
 
 Player.prototype.shoot = function() {
     if (this.shot === false) {
-        console.log(this.shot);
         bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height,"player", bullets.length));
         this.shot = true;
     }
@@ -226,7 +225,7 @@ Bullet.prototype.testCollision = function(bullet) {
             if (collisionTest(bullet,barrier) && barrier.display === true) {
                 barrier.health -= 1;
                 collisionNum = bullet.num;
-                console.log(this.type);
+
                 if (bullet.type === "player") {
                     player.shot = false;
                  }
