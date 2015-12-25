@@ -29,6 +29,9 @@ var Engine = (function(global) {
         canvas.width = 1200;
         canvas.height =900;
         doc.body.appendChild(canvas);
+        ctx.rect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = 'black';
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -135,8 +138,6 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
-        ctx.rect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = 'black';
         ctx.fill();
         renderEntities();
 
