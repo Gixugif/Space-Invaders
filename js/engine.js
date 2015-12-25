@@ -30,7 +30,6 @@ var Engine = (function(global) {
         canvas.height =900;
         doc.body.appendChild(canvas);
         ctx.rect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = 'black';
 
 
     /* This function serves as the kickoff point for the game loop itself
@@ -138,6 +137,7 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
+        ctx.fillStyle = 'black';
         ctx.fill();
         renderEntities();
 
@@ -164,6 +164,8 @@ var Engine = (function(global) {
         barriers.forEach(function(barrier) {
             barrier.render();
         });
+
+        hud.render(ctx);
     }
 
     function collisions() {
@@ -208,13 +210,15 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset(state) {
-        var bullets = []
+        var bullets = [];
 
         if (state === 1) {
             allEnemies = [];
             barriers = [];
 
             player = new Player();
+
+            hud = new HUD(0,3);
 
             for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
             for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
@@ -229,7 +233,6 @@ var Engine = (function(global) {
             }
 
             Start = 0;
-
         }
 
     }

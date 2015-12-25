@@ -82,6 +82,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 player.shot = false;
                 enemy.display = false;
                 collisionNum = bullet.num;
+                hud.score += 100;
             }
         }
 
@@ -100,7 +101,8 @@ Enemy.prototype.testCollision = function(enemy) {
 
     if (collisionTest(enemy,player) && enemy.display === true) {
         enemy.display = false;
-        player.live -= 1;
+        player.lives -= 1;
+        hud.lives -= 1;
 
         if (player.lives > 0) {
                 state = 2;
@@ -228,6 +230,7 @@ Bullet.prototype.testCollision = function(bullet) {
 
         if (collisionTest(player,bullet)) {
             player.lives -= 1;
+            hud.lives -= 1;
             collisionNum = bullet.num;
 
             if (player.lives > 0) {
@@ -296,18 +299,24 @@ Barrier.prototype.render= function() {
 };
 
 // HUD class
-var HUD = function() {
+var HUD = function(score,lives) {
     this.score = score;
     this.lives = lives;
+};
+
+HUD.prototype.update = function(ctx) {
 
 };
 
-HUD.prototype.update = function() {
+HUD.prototype.render = function(ctx) {
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "white";
 
-};
+    var scoreText = "SCORE: " + this.score;
+    var livesText = "LIVES: " + this.lives;
 
-HUD.prototype.render = function() {
-
+    ctx.fillText(scoreText,10,30);
+    ctx.fillText(livesText,1100,30);
 };
 
 
@@ -319,7 +328,7 @@ var barriers = [];
 var bullets = []
 
 var player = new Player();
-//var hud = new HUD();
+var hud = new HUD(0,3);
 
 for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
 for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
