@@ -98,7 +98,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
     });
 
-    if (collisionTest(enemy,player) && this.display === true) {
+    if (collisionTest(enemy,player) && enemy.display === true) {
         enemy.display = false;
         player.live -= 1;
 
@@ -177,7 +177,7 @@ Player.prototype.handleInput = function(input) {
 
 Player.prototype.shoot = function() {
     if (this.shot === false) {
-        bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height,"player", bullets.length));
+        bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height + 30,"player", bullets.length));
         this.shot = true;
     }
 };
@@ -189,7 +189,7 @@ var Bullet = function(posX,posY,type, num) {
     this.dx = 0;
     this.dy = 0;
     this.width = 5;
-    this.height = 66;
+    this.height = 25;
     this.type = type;
     this.num = num;
     this.sprite = 'images/bullet.png';
