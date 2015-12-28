@@ -1,6 +1,7 @@
 var ENEMY_DX = 0.3;
 var ENEMY_DY = 20;
 var Start = 0;
+var Enemy_Pop = 41;
 
 Object.prototype.isEmpty = function() {
     for (var prop in this) if (this.hasOwnProperty(prop)) return false;
@@ -84,6 +85,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 collisionNum = bullet.num;
                 hud.score += 100;
                 ENEMY_DX = ENEMY_DX * 1.07;
+                Enemy_Pop -= 1;
             }
         }
 
@@ -95,6 +97,7 @@ Enemy.prototype.testCollision = function(enemy) {
                     enemy.display = false;
                     barrier.health -= 1;
                     ENEMY_DX = ENEMY_DX * 1.07;
+                    Enemy_Pop -= 1;
                 }
             });
         }
@@ -106,6 +109,7 @@ Enemy.prototype.testCollision = function(enemy) {
         player.lives -= 1;
         hud.lives -= 1;
         ENEMY_DX = ENEMY_DX * 1.07;
+        Enemy_Pop -= 1;
 
         if (player.lives > 0) {
                 state = 2;
@@ -122,6 +126,10 @@ Enemy.prototype.testCollision = function(enemy) {
             } else {
                 state = 1;
             }
+    }
+
+    if (Enemy_Pop === 0) {
+        state = 3;
     }
 
     return [collisionNum,state];
@@ -343,7 +351,7 @@ var bullets = []
 var player = new Player();
 var hud = new HUD(0,player.lives);
 
-for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
+for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
 for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
 
 // This listens for key presses and sends the keys to your

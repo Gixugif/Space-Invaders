@@ -219,6 +219,8 @@ var Engine = (function(global) {
         bullets = [];
 
         if (state === 1) {
+            // Game Over
+
             ENEMY_DX = 0.3;
             allEnemies = [];
             barriers = [];
@@ -227,10 +229,12 @@ var Engine = (function(global) {
 
             hud = new HUD(0,3);
 
-            for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
+            for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
             for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
             Start = 0;
         } else if (state === 2) {
+            // life lost
+
             player.x = (500) + (77 / 2);
             player.y = 820;
 
@@ -239,6 +243,19 @@ var Engine = (function(global) {
                 allEnemies[x].y = calcHeight(x);
             }
 
+            Start = 0;
+        } else if (state === 3) {
+            // win round
+
+            ENEMY_DX = 0.3;
+            allEnemies = [];
+            barriers = [];
+
+            player.x = (500) + (77 / 2);
+            player.y = 820;
+
+            for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
+            for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
             Start = 0;
         }
 
