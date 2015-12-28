@@ -224,6 +224,7 @@ var Engine = (function(global) {
             ENEMY_DX = 0.3;
             allEnemies = [];
             barriers = [];
+            Enemy_Pop = 40;
 
             player = new Player();
 
@@ -234,14 +235,16 @@ var Engine = (function(global) {
             Start = 0;
         } else if (state === 2) {
             // life lost
+            var x = 0;
 
             player.x = (500) + (77 / 2);
             player.y = 820;
 
-            for (var x = 0; x < 49; x++) {
-                allEnemies[x].x = (91 + 135 * (x % 8));
-                allEnemies[x].y = calcHeight(x);
-            }
+            allEnemies.forEach(function(enemy) {
+                enemy.x = (91 + 135 * (x % 8));
+                enemy.y = calcHeight(x);
+                x++
+            });
 
             Start = 0;
         } else if (state === 3) {
@@ -250,6 +253,7 @@ var Engine = (function(global) {
             ENEMY_DX = 0.3;
             allEnemies = [];
             barriers = [];
+            Enemy_Pop = 40;
 
             player.x = (500) + (77 / 2);
             player.y = 820;
