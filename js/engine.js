@@ -170,7 +170,7 @@ var Engine = (function(global) {
 
     function collisions() {
 
-        delBullets = [];
+        var delBullets = [];
         var collisionResults = []
         var resetState = 0;
 
@@ -219,6 +219,7 @@ var Engine = (function(global) {
         bullets = [];
 
         if (state === 1) {
+            ENEMY_DX = 0.3;
             allEnemies = [];
             barriers = [];
 

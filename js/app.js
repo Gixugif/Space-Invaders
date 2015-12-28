@@ -1,4 +1,4 @@
-var ENEMY_DX = 1;
+var ENEMY_DX = 0.3;
 var ENEMY_DY = 20;
 var Start = 0;
 
@@ -83,6 +83,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 enemy.display = false;
                 collisionNum = bullet.num;
                 hud.score += 100;
+                ENEMY_DX = ENEMY_DX * 1.07;
             }
         }
 
@@ -93,6 +94,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 if (collisionTest(enemy,barrier) && barrier.display === true) {
                     enemy.display = false;
                     barrier.health -= 1;
+                    ENEMY_DX = ENEMY_DX * 1.07;
                 }
             });
         }
@@ -103,6 +105,7 @@ Enemy.prototype.testCollision = function(enemy) {
         enemy.display = false;
         player.lives -= 1;
         hud.lives -= 1;
+        ENEMY_DX = ENEMY_DX * 1.07;
 
         if (player.lives > 0) {
                 state = 2;
