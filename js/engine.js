@@ -174,7 +174,7 @@ var Engine = (function(global) {
         var collisionResults = []
         var resetState = 0;
 
-        allEnemies.forEach(function(enemy) {
+        allEnemies.every(function(enemy, index, array) {
            collisionResults = enemy.testCollision(enemy);
 
             if (collisionResults[0] !== -1) {
@@ -184,6 +184,12 @@ var Engine = (function(global) {
            if (collisionResults[1] !== 0) {
                 resetState = collisionResults[1];
            }
+
+           // we don't want to lose lives for every enemy past the bottom of the screen
+           // so we need to break ouf of the loop once we've found one
+           if (resetState !== 0) {
+            return false;
+           } else return true;
         });
 
         bullets.forEach(function(bullet) {

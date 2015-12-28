@@ -111,6 +111,16 @@ Enemy.prototype.testCollision = function(enemy) {
             }
     }
 
+    if ((enemy.y + 70) > 900  && enemy.display === true) {
+        player.lives -= 1;
+        hud.lives -= 1;
+        if (player.lives > 0) {
+                state = 2;
+            } else {
+                state = 1;
+            }
+    }
+
     return [collisionNum,state];
 }
 
@@ -328,7 +338,7 @@ var barriers = [];
 var bullets = []
 
 var player = new Player();
-var hud = new HUD(0,3);
+var hud = new HUD(0,player.lives);
 
 for (var x = 0; x < 49; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
 for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
