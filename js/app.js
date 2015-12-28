@@ -1,12 +1,7 @@
 var ENEMY_DX = 0.3;
 var ENEMY_DY = 20;
 var Start = 0;
-var Enemy_Pop = 41;
-
-Object.prototype.isEmpty = function() {
-    for (var prop in this) if (this.hasOwnProperty(prop)) return false;
-    return true;
-};
+var Enemy_Pop = 40;
 
 // Enemy Class
 var Enemy = function(posX, posY, num) {
@@ -32,13 +27,13 @@ Enemy.prototype.update = function(dt) {
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
-        allEnemy.y += ENEMY_DY;
-        allEnemy.x += ENEMY_DX;
+            allEnemy.y += ENEMY_DY;
+            allEnemy.x += ENEMY_DX;
         });
     }
 
-	// Enemies will come out of alignment due to position not updating
-	// at exacty the same time. This will keep them aligned
+    // Enemies will come out of alignment due to position not updating
+    // at exacty the same time. This will keep them aligned
     if (this.num > 7) {
         this.x = allEnemies[this.num - 8].x;
     }
@@ -47,12 +42,12 @@ Enemy.prototype.update = function(dt) {
         this.x = allEnemies[this.num - 1].x + 135
     }
 
-	// Balance enemy shooting by having each enemy only have a small
-	// chance of firing
+    // Balance enemy shooting by having each enemy only have a small
+    // chance of firing
     var rand = Math.floor((Math.random() * 2500) + 1);
-	if (rand === this.num && this.display === true) {
+    if (rand === this.num && this.display === true) {
         this.shoot();
-	}
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -67,7 +62,7 @@ Enemy.prototype.move = function() {
 };
 
 Enemy.prototype.shoot = function() {
-     bullets.push(new Bullet(this.x,this.y,"enemy",bullets.length));
+    bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
 };
 
 Enemy.prototype.testCollision = function(enemy) {
@@ -79,7 +74,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
         if (bullet.type === "player" && enemy.display === true) {
 
-            if (collisionTest(enemy,bullet)) {
+            if (collisionTest(enemy, bullet)) {
                 player.shot = false;
                 enemy.display = false;
                 collisionNum = bullet.num;
@@ -93,7 +88,7 @@ Enemy.prototype.testCollision = function(enemy) {
         if (enemy.y > (725 - enemy.height) && enemy.display === true) {
             barriers.forEach(function(barrier) {
 
-                if (collisionTest(enemy,barrier) && barrier.display === true) {
+                if (collisionTest(enemy, barrier) && barrier.display === true) {
                     enemy.display = false;
                     barrier.health -= 1;
                     ENEMY_DX = ENEMY_DX * 1.07;
@@ -104,7 +99,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
     });
 
-    if (collisionTest(enemy,player) && enemy.display === true) {
+    if (collisionTest(enemy, player) && enemy.display === true) {
         enemy.display = false;
         player.lives -= 1;
         hud.lives -= 1;
@@ -112,43 +107,43 @@ Enemy.prototype.testCollision = function(enemy) {
         Enemy_Pop -= 1;
 
         if (player.lives > 0) {
-                state = 2;
-            } else {
-                state = 1;
-            }
+            state = 2;
+        } else {
+            state = 1;
+        }
     }
 
-    if ((enemy.y + 70) > 900  && enemy.display === true) {
+    if ((enemy.y + 70) > 900 && enemy.display === true) {
         player.lives -= 1;
         hud.lives -= 1;
         if (player.lives > 0) {
-                state = 2;
-            } else {
-                state = 1;
-            }
+            state = 2;
+        } else {
+            state = 1;
+        }
     }
 
     if (Enemy_Pop === 0) {
         state = 3;
     }
 
-    return [collisionNum,state];
+    return [collisionNum, state];
 }
 
-var calcHeight = function (count) {
-   if (count <= 8) {
-    return 50;
-   } else if (count <= 16) {
-    return 70 + 81;
-   } else if (count <= 24) {
-    return 90 + (2 * 81);
-   } else if (count <= 32) {
-    return 110 + (3 * 81);
-   } else if (count <= 40) {
-    return 130 + (4 * 81);
-   } else if (count <= 48) {
-    return 150 + (5 * 81);
-   }
+var calcHeight = function(count) {
+    if (count <= 8) {
+        return 50;
+    } else if (count <= 16) {
+        return 70 + 81;
+    } else if (count <= 24) {
+        return 90 + (2 * 81);
+    } else if (count <= 32) {
+        return 110 + (3 * 81);
+    } else if (count <= 40) {
+        return 130 + (4 * 81);
+    } else if (count <= 48) {
+        return 150 + (5 * 81);
+    }
 }
 
 
@@ -187,7 +182,7 @@ Player.prototype.handleInput = function(input) {
     } else if (keyboard["'"]) {
         this.dx = 100;
         Start = 1;
-    } else if (keyboard.isEmpty) {
+    } else {
         this.dx = 0;
     }
 
@@ -200,13 +195,13 @@ Player.prototype.handleInput = function(input) {
 
 Player.prototype.shoot = function() {
     if (this.shot === false) {
-        bullets.push(new Bullet(this.x + this.width / 2,this.y - this.height + 30,"player", bullets.length));
+        bullets.push(new Bullet(this.x + this.width / 2, this.y - this.height + 30, "player", bullets.length));
         this.shot = true;
     }
 };
 
 // Bullet class
-var Bullet = function(posX,posY,type, num) {
+var Bullet = function(posX, posY, type, num) {
     this.x = posX;
     this.y = posY;
     this.dx = 0;
@@ -223,7 +218,7 @@ Bullet.prototype.update = function(dt) {
 };
 
 Bullet.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite),this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Bullet.prototype.move = function() {
@@ -249,7 +244,7 @@ Bullet.prototype.testCollision = function(bullet) {
 
     if (bullet.type === 'enemy' && bullet.y > 700) {
 
-        if (collisionTest(player,bullet)) {
+        if (collisionTest(player, bullet)) {
             player.lives -= 1;
             hud.lives -= 1;
             collisionNum = bullet.num;
@@ -266,18 +261,18 @@ Bullet.prototype.testCollision = function(bullet) {
 
         barriers.forEach(function(barrier) {
 
-            if (collisionTest(bullet,barrier) && barrier.display === true) {
+            if (collisionTest(bullet, barrier) && barrier.display === true) {
                 barrier.health -= 1;
                 collisionNum = bullet.num;
 
                 if (bullet.type === "player") {
                     player.shot = false;
-                 }
+                }
             }
         });
     }
 
-    return [collisionNum,state];
+    return [collisionNum, state];
 }
 
 
@@ -296,7 +291,7 @@ var Barrier = function(posX, posY) {
 Barrier.prototype.update = function() {
     if (this.health === 0) {
         this.display = false;
-    }else if (this.health <= 2) {
+    } else if (this.health <= 2) {
         this.sprite = 'images/barrier_most.png';
         this.width = 90;
         this.height = 52;
@@ -311,16 +306,16 @@ Barrier.prototype.update = function() {
     }
 };
 
-Barrier.prototype.render= function() {
+Barrier.prototype.render = function() {
     if (this.display === true) {
         // we take the difference between the current and original dimensions in order
         // to stop them from shifting around
-        ctx.drawImage(Resources.get(this.sprite),this.x + (92 - this.width), this.y + (69 - this.height));
+        ctx.drawImage(Resources.get(this.sprite), this.x + (92 - this.width), this.y + (69 - this.height));
     }
 };
 
 // HUD class
-var HUD = function(score,lives) {
+var HUD = function(score, lives) {
     this.score = score;
     this.lives = lives;
 };
@@ -336,8 +331,8 @@ HUD.prototype.render = function(ctx) {
     var scoreText = "SCORE: " + this.score;
     var livesText = "LIVES: " + this.lives;
 
-    ctx.fillText(scoreText,10,30);
-    ctx.fillText(livesText,1100,30);
+    ctx.fillText(scoreText, 10, 30);
+    ctx.fillText(livesText, 1100, 30);
 };
 
 
@@ -349,10 +344,14 @@ var barriers = [];
 var bullets = []
 
 var player = new Player();
-var hud = new HUD(0,player.lives);
+var hud = new HUD(0, player.lives);
 
-for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);}
-for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
+for (var x = 0; x < 41; x++) {
+    allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
+}
+for (var x = 0; x < 3; x++) {
+    barriers[x] = new Barrier(230 + (x * 300), 725)
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -370,55 +369,55 @@ document.addEventListener('keydown', function(e) {
 
 // keyboard_module by RobKohr
 // Properly handles when a key is held down and then released
-function keyboard_module(onUpdate){
+function keyboard_module(onUpdate) {
     var kb = {};
     var unicode_mapping = {};
-    document.onkeydown = function(e){
-        var unicode=e.charCode? e.charCode : e.keyCode
+    document.onkeydown = function(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode
         var key = getKey(unicode);
         kb[key] = true;
-        if(onUpdate){
+        if (onUpdate) {
             onUpdate(kb);
         }
     }
 
-    document.onkeyup = function(e){
-        var unicode=e.charCode? e.charCode : e.keyCode
+    document.onkeyup = function(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode
         var key = getKey(unicode);
         delete kb[key];
-        if(onUpdate){
+        if (onUpdate) {
             onUpdate(kb);
         }
     }
 
-    function getKey(unicode){
-        if(unicode_mapping[unicode]){
+    function getKey(unicode) {
+        if (unicode_mapping[unicode]) {
             var key = unicode_mapping[unicode];
-        }else{
-            var key= unicode_mapping[unicode] = String.fromCharCode(unicode);
+        } else {
+            var key = unicode_mapping[unicode] = String.fromCharCode(unicode);
         }
         return key;
     }
     return kb;
 }
 
-function testing(kb){
+function testing(kb) {
     //console.log('These are the down keys', kb);
 }
 
-function collisionTest(obj1,obj2) {
+function collisionTest(obj1, obj2) {
     if (obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
         obj1.y < obj2.y + obj2.height &&
         obj1.height + obj1.y > obj2.y) {
 
-            return true;
-        }
+        return true;
     }
+}
 
 function deleteBullets(nums) {
     nums.forEach(function(num) {
-        bullets.splice(num,1);
+        bullets.splice(num, 1);
     });
 
     for (var i = 0; i < bullets.length; i++) {
@@ -427,4 +426,3 @@ function deleteBullets(nums) {
 }
 
 var keyboard = keyboard_module();
-
