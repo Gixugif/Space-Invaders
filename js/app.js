@@ -3,7 +3,12 @@ var ENEMY_DY = 20;
 var Start = 0;
 var Enemy_Pop = 40;
 
-// Enemy Class
+/** 
+ * Represents an enemy.
+ * @constructor
+ * @param {int} posX - the X position of the enemy.
+ * @param {int} posY - the Y position of the enemy.
+ */
 var Enemy = function(posX, posY, num) {
     this.x = posX;
     this.y = posY;
@@ -17,13 +22,19 @@ var Enemy = function(posX, posY, num) {
     this.sprite = 'images/enemy1.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/**
+ * Update the enemy's position.
+ * @param {int} dt - a time delta between ticks.
+ */
 Enemy.prototype.update = function(dt) {
     var movement = (ENEMY_DX * this.population) * dt;
     this.x += movement;
     this.y += this.dy * dt;
 
+    /** 
+     * Keep the enemy from going off the edge of the screen.
+     * If it does go reach the the edge, reverse direction.
+     */ 
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
@@ -32,8 +43,11 @@ Enemy.prototype.update = function(dt) {
         });
     }
 
-    // Enemies will come out of alignment due to position not updating
-    // at exacty the same time. This will keep them aligned
+    /**
+     * Enemies will come out of alignment due to position 
+     * not updating at exacty the same time. This will keep 
+     * them aligned.
+     */
     if (this.num > 7) {
         this.x = allEnemies[this.num - 8].x;
     }
@@ -42,15 +56,17 @@ Enemy.prototype.update = function(dt) {
         this.x = allEnemies[this.num - 1].x + 135
     }
 
-    // Balance enemy shooting by having each enemy only have a small
-    // chance of firing
+    /**
+     * Balance enemy shooting by having each enemy only have a small
+     * chance of firing.
+     */
     var rand = Math.floor((Math.random() * 2500) + 1);
     if (rand === this.num && this.display === true) {
         this.shoot();
     }
 };
 
-// Draw the enemy on the screen, required method for game
+/** Draw the enemy on the screen */
 Enemy.prototype.render = function() {
     if (this.display === true) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -61,10 +77,15 @@ Enemy.prototype.move = function() {
 
 };
 
+/** Add a bullet to the game when an enemy shoots */
 Enemy.prototype.shoot = function() {
     bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
 };
 
+/** 
+ * Test to see if the enemy is in contact with any other
+ * entity
+ */
 Enemy.prototype.testCollision = function(enemy) {
 
     var collisionNum = -1
@@ -147,7 +168,10 @@ var calcHeight = function(count) {
 }
 
 
-// Player Class
+/**
+ * Represents the player
+ * @constructor
+ */
 var Player = function() {
     this.sprite = 'images/player.png';
     this.x = (500) + (77 / 2);
@@ -161,6 +185,10 @@ var Player = function() {
     this.shot = false;
 };
 
+/**
+ * Update the player's position.
+ * @param {int} dt - a time delta between ticks.
+ */
 Player.prototype.update = function(dt) {
     this.x += this.dx * dt;
     if (this.x < 20) {
@@ -170,10 +198,16 @@ Player.prototype.update = function(dt) {
     }
 };
 
+/** Draw the player to the screen. */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/**
+ * See what button is being pressed and take
+ * the appropriate action.
+ * @param {[str]} input - array of keys being pressed.
+ */
 Player.prototype.handleInput = function(input) {
 
     if (keyboard['\%']) {
@@ -193,6 +227,10 @@ Player.prototype.handleInput = function(input) {
 
 };
 
+/** 
+ * Add a bullet if the player shoots and stop
+ * it from shooting until the bullet is gone.
+ */
 Player.prototype.shoot = function() {
     if (this.shot === false) {
         bullets.push(new Bullet(this.x + this.width / 2, this.y - this.height + 30, "player", bullets.length));
@@ -200,7 +238,17 @@ Player.prototype.shoot = function() {
     }
 };
 
-// Bullet class
+/**
+ * Represents a bullet.
+ * @constructor
+ * 
+ * @param {int} posX - The X position of the bullet.
+ * @param {int} posY - The Y position of the bullet.
+ * @param {str} type - Shows whether the bullet is from
+ * the player or an enemy.
+ * @param {int} num - The index where the bullet is located.
+ * Makes it easy to delete it when necessary.
+ */
 var Bullet = function(posX, posY, type, num) {
     this.x = posX;
     this.y = posY;
@@ -213,14 +261,24 @@ var Bullet = function(posX, posY, type, num) {
     this.sprite = 'images/bullet.png';
 };
 
+/**
+ * Updates the bullet's position
+ *
+ * @param {int} dt - a time delta between ticks.
+ */
 Bullet.prototype.update = function(dt) {
     this.y += this.dy * dt;
 };
 
+/** Draws the player to the screen. */
 Bullet.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/** 
+ * Sets the bullets movement rate based on
+ * type.
+ */
 Bullet.prototype.move = function() {
     if (this.type === "player") {
         this.dy = -200;
@@ -229,6 +287,12 @@ Bullet.prototype.move = function() {
     }
 }
 
+/**
+ * Tests whether the bullet is in contact with any
+ * other entities.
+ *
+ * @param {[bullet]} bullet - The array of bullets
+ */
 Bullet.prototype.testCollision = function(bullet) {
 
     var collisionNum = -1;
@@ -276,7 +340,13 @@ Bullet.prototype.testCollision = function(bullet) {
 }
 
 
-// Barrier class
+/**
+ * Represents a barrier.
+ * @constructor
+ *
+ * @param {int} posX - The barrier's position on the X axis.
+ * @param {int} posY - The barrier's position on the Y axis.
+ */
 var Barrier = function(posX, posY) {
     this.x = posX
     this.y = posY;
@@ -288,6 +358,7 @@ var Barrier = function(posX, posY) {
 
 };
 
+/** Update the barrier's sprite. */
 Barrier.prototype.update = function() {
     if (this.health === 0) {
         this.display = false;
@@ -306,6 +377,7 @@ Barrier.prototype.update = function() {
     }
 };
 
+/** Draw the barrier to the screen. */
 Barrier.prototype.render = function() {
     if (this.display === true) {
         // we take the difference between the current and original dimensions in order
@@ -314,16 +386,20 @@ Barrier.prototype.render = function() {
     }
 };
 
-// HUD class
+/**
+ * Represents the HUD.
+ * @constructor
+ *
+ * @param {int} score - the score of the player to display.
+ * @param {int} lives - the amount of lives the player has
+ * to display.
+ */
 var HUD = function(score, lives) {
     this.score = score;
     this.lives = lives;
 };
 
-HUD.prototype.update = function(ctx) {
-
-};
-
+/** Draw the HUD to the screen */
 HUD.prototype.render = function(ctx) {
     ctx.font = "20px Arial";
     ctx.fillStyle = "white";
@@ -336,9 +412,6 @@ HUD.prototype.render = function(ctx) {
 };
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 var allEnemies = [];
 var barriers = [];
 var bullets = []
@@ -367,8 +440,12 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-// keyboard_module by RobKohr
-// Properly handles when a key is held down and then released
+/**
+ * Properly handles when a key is held down and then released.
+ * Credit to: RobKohr
+ *
+ * @param {} onUpdate - 
+ */
 function keyboard_module(onUpdate) {
     var kb = {};
     var unicode_mapping = {};
@@ -405,6 +482,7 @@ function testing(kb) {
     //console.log('These are the down keys', kb);
 }
 
+/** Test if the boundboxes of two entities are intersecting */
 function collisionTest(obj1, obj2) {
     if (obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
@@ -415,6 +493,13 @@ function collisionTest(obj1, obj2) {
     }
 }
 
+/** 
+ * Removes bullets from the bullet array when
+ * an in-game event destroys them.
+ *
+ * @param {[int]} nums - array of indexes of the bullets
+ * to delete.
+ */
 function deleteBullets(nums) {
     nums.forEach(function(num) {
         bullets.splice(num, 1);
