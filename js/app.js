@@ -3,7 +3,7 @@ var ENEMY_DY = 20;
 var Start = 0;
 var Enemy_Pop = 40;
 
-/** 
+/**
  * Represents an enemy.
  * @constructor
  * @param {int} posX - the X position of the enemy.
@@ -31,10 +31,10 @@ Enemy.prototype.update = function(dt) {
     this.x += movement;
     this.y += this.dy * dt;
 
-    /** 
+    /**
      * Keep the enemy from going off the edge of the screen.
      * If it does go reach the the edge, reverse direction.
-     */ 
+     */
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
         ENEMY_DX = -ENEMY_DX;
         allEnemies.forEach(function(allEnemy) {
@@ -44,8 +44,8 @@ Enemy.prototype.update = function(dt) {
     }
 
     /**
-     * Enemies will come out of alignment due to position 
-     * not updating at exacty the same time. This will keep 
+     * Enemies will come out of alignment due to position
+     * not updating at exacty the same time. This will keep
      * them aligned.
      */
     if (this.num > 7) {
@@ -82,9 +82,14 @@ Enemy.prototype.shoot = function() {
     bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
 };
 
-/** 
+/**
  * Test to see if the enemy is in contact with any other
  * entity
+ *
+ * @param {Enemy} enemy - the Enemy object being tested
+ * @returns {[int,int]} An array with the first index being the index of
+ * the bullet the enemy has collided with and the second index being the
+ * current state of the game.
  */
 Enemy.prototype.testCollision = function(enemy) {
 
@@ -151,6 +156,10 @@ Enemy.prototype.testCollision = function(enemy) {
     return [collisionNum, state];
 }
 
+/**
+ * Helper function for finding the vertical placing
+ * for enemies.
+ */
 var calcHeight = function(count) {
     if (count <= 8) {
         return 50;
@@ -227,7 +236,7 @@ Player.prototype.handleInput = function(input) {
 
 };
 
-/** 
+/**
  * Add a bullet if the player shoots and stop
  * it from shooting until the bullet is gone.
  */
@@ -241,7 +250,7 @@ Player.prototype.shoot = function() {
 /**
  * Represents a bullet.
  * @constructor
- * 
+ *
  * @param {int} posX - The X position of the bullet.
  * @param {int} posY - The Y position of the bullet.
  * @param {str} type - Shows whether the bullet is from
@@ -275,7 +284,7 @@ Bullet.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-/** 
+/**
  * Sets the bullets movement rate based on
  * type.
  */
@@ -292,6 +301,9 @@ Bullet.prototype.move = function() {
  * other entities.
  *
  * @param {[bullet]} bullet - The array of bullets
+ * @returns {[int,int]} An array with the first index being the index of
+ * the bullet the enemy has collided with and the second index being the
+ * current state of the game.
  */
 Bullet.prototype.testCollision = function(bullet) {
 
@@ -444,7 +456,9 @@ document.addEventListener('keydown', function(e) {
  * Properly handles when a key is held down and then released.
  * Credit to: RobKohr
  *
- * @param {} onUpdate - 
+ * @param {Function} onUpdate - An optional parameter. A function
+ * that executes when a key is pressed or released.
+ * @returns {Object} They keys currently pressed down.
  */
 function keyboard_module(onUpdate) {
     var kb = {};
@@ -482,7 +496,16 @@ function testing(kb) {
     //console.log('These are the down keys', kb);
 }
 
-/** Test if the boundboxes of two entities are intersecting */
+/**
+ * Test if the boundboxes of two entities are intersecting
+ *
+ * @param {Enemy|Player|Bullet|Barrier} obj1 - The first
+ * object being tested.
+ * @param {Enemy|Player|Bullet|Barrier} obj2 - The second
+ * object being tested.
+ * @returns {boolean} Returns whether the two objects are
+ * intersecting or not.
+ */
 function collisionTest(obj1, obj2) {
     if (obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
@@ -493,7 +516,7 @@ function collisionTest(obj1, obj2) {
     }
 }
 
-/** 
+/**
  * Removes bullets from the bullet array when
  * an in-game event destroys them.
  *
