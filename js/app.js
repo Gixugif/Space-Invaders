@@ -492,10 +492,6 @@ function keyboard_module(onUpdate) {
     return kb;
 }
 
-function testing(kb) {
-    //console.log('These are the down keys', kb);
-}
-
 /**
  * Test if the boundboxes of two entities are intersecting
  *
