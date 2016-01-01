@@ -55,15 +55,6 @@ Enemy.prototype.update = function(dt) {
     if (this.num % 8 > 0) {
         this.x = allEnemies[this.num - 1].x + 135
     }
-
-    /**
-     * Balance enemy shooting by having each enemy only have a small
-     * chance of firing.
-     */
-    var rand = Math.floor((Math.random() * 2500) + 1);
-    if (rand === this.num && this.display === true) {
-        this.shoot();
-    }
 };
 
 /** Draw the enemy on the screen */
@@ -79,7 +70,16 @@ Enemy.prototype.move = function() {
 
 /** Add a bullet to the game when an enemy shoots */
 Enemy.prototype.shoot = function() {
-    bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
+
+    /**
+     * Balance enemy shooting by having each enemy only have a small
+     * chance of firing.
+     */
+    var rand = Math.floor(Math.random() * 2500 + 1);
+
+    if (rand === this.num && this.display === true) {
+        bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
+    }
 };
 
 /**

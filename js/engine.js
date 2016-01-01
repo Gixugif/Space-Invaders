@@ -109,6 +109,7 @@ var Engine = (function(global) {
 
         allEnemies.forEach(function(enemy){
             enemy.update(dt);
+            enemy.shoot();
         });
 
         bullets.forEach(function(bullet){
@@ -214,14 +215,14 @@ var Engine = (function(global) {
     /**
      * Resets the state of the game to different degrees depending on the
      * cause of the reset.
-     * 
+     *
      * State 1: Game Over - When the player loses all of its lives the game
      * will reset to its original state.
      *
      * State 2: Lost Life - If the player loses a life the remaining enemies
      * and player will move to their original position and all bullets will
      * be erased.
-     * 
+     *
      * State 3: Round Won - If all of the enemies are defeated the game will
      * reset to its original state except the current score and lives will
      * remain the same.
