@@ -108,6 +108,7 @@ var Engine = (function(global) {
         player.update(dt);
 
         allEnemies.forEach(function(enemy){
+            enemy.move();
             enemy.update(dt);
             enemy.shoot();
         });

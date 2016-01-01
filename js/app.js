@@ -1,5 +1,4 @@
 var enemyDX = 0.3;
-var enemyDY = 20;
 var Start = 0;
 var Enemy_Pop = 40;
 
@@ -12,7 +11,7 @@ var Enemy_Pop = 40;
 var Enemy = function(posX, posY, num) {
     this.x = posX;
     this.y = posY;
-    this.dy = 0;
+    this.dy = 20;
     this.dx = 1;
     this.num = num;
     this.population = 56;
@@ -27,9 +26,7 @@ var Enemy = function(posX, posY, num) {
  * @param {int} dt - a time delta between ticks.
  */
 Enemy.prototype.update = function(dt) {
-    var movement = (enemyDX * this.population) * dt;
-    this.x += movement;
-    this.y += this.dy * dt;
+    this.x += this.dx * dt;
 
     /**
      * Keep the enemy from going off the edge of the screen.
@@ -37,9 +34,13 @@ Enemy.prototype.update = function(dt) {
      */
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
         enemyDX = -enemyDX;
-        allEnemies.forEach(function(allEnemy) {
-            allEnemy.y += enemyDY;
-            allEnemy.x += enemyDX;
+
+        /**
+         * We move everyone vertically all at once for
+         * simplicity.
+         */
+        allEnemies.forEach(function(enemy) {
+            enemy.y += enemy.dy;
         });
     }
 
@@ -65,6 +66,7 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.move = function() {
+    this.dx = (enemyDX * this.population);
 
 };
 
