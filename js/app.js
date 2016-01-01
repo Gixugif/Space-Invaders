@@ -1,5 +1,5 @@
-var ENEMY_DX = 0.3;
-var ENEMY_DY = 20;
+var enemyDX = 0.3;
+var enemyDY = 20;
 var Start = 0;
 var Enemy_Pop = 40;
 
@@ -27,7 +27,7 @@ var Enemy = function(posX, posY, num) {
  * @param {int} dt - a time delta between ticks.
  */
 Enemy.prototype.update = function(dt) {
-    var movement = (ENEMY_DX * this.population) * dt;
+    var movement = (enemyDX * this.population) * dt;
     this.x += movement;
     this.y += this.dy * dt;
 
@@ -36,10 +36,10 @@ Enemy.prototype.update = function(dt) {
      * If it does go reach the the edge, reverse direction.
      */
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
-        ENEMY_DX = -ENEMY_DX;
+        enemyDX = -enemyDX;
         allEnemies.forEach(function(allEnemy) {
-            allEnemy.y += ENEMY_DY;
-            allEnemy.x += ENEMY_DX;
+            allEnemy.y += enemyDY;
+            allEnemy.x += enemyDX;
         });
     }
 
@@ -105,7 +105,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 enemy.display = false;
                 collisionNum = bullet.num;
                 hud.score += 100;
-                ENEMY_DX = ENEMY_DX * 1.07;
+                enemyDX = enemyDX * 1.07;
                 Enemy_Pop -= 1;
             }
         }
@@ -117,7 +117,7 @@ Enemy.prototype.testCollision = function(enemy) {
                 if (collisionTest(enemy, barrier) && barrier.display === true) {
                     enemy.display = false;
                     barrier.health -= 1;
-                    ENEMY_DX = ENEMY_DX * 1.07;
+                    enemyDX = enemyDX * 1.07;
                     Enemy_Pop -= 1;
                 }
             });
@@ -129,7 +129,7 @@ Enemy.prototype.testCollision = function(enemy) {
         enemy.display = false;
         player.lives -= 1;
         hud.lives -= 1;
-        ENEMY_DX = ENEMY_DX * 1.07;
+        enemyDX = enemyDX * 1.07;
         Enemy_Pop -= 1;
 
         if (player.lives > 0) {
