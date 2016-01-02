@@ -4,7 +4,6 @@
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
  */
-
 /**
  * Predefine the variables we'll be using within this scope,
  * create the canvas element, grab the 2D context for that canvas
@@ -19,10 +18,10 @@ var Engine = (function(global) {
         lastTime;
 
 
-        canvas.width = 1200;
-        canvas.height =900;
-        doc.body.appendChild(canvas);
-        ctx.rect(0,0,canvas.width,canvas.height);
+    canvas.width = 1200;
+    canvas.height = 900;
+    doc.body.appendChild(canvas);
+    ctx.rect(0, 0, canvas.width, canvas.height);
 
 
     /* This function serves as the kickoff point for the game loop itself
@@ -105,18 +104,18 @@ var Engine = (function(global) {
 
         player.update(dt);
 
-        allEnemies.forEach(function(enemy){
+        allEnemies.forEach(function(enemy) {
             enemy.move();
             enemy.update(dt);
             enemy.shoot();
         });
 
-        bullets.forEach(function(bullet){
+        bullets.forEach(function(bullet) {
             bullet.move();
             bullet.update(dt);
         });
 
-        barriers.forEach(function(barrier){
+        barriers.forEach(function(barrier) {
             barrier.update(dt);
         });
 
@@ -169,11 +168,11 @@ var Engine = (function(global) {
     function collisions() {
 
         var delBullets = [];
-        var collisionResults = []
+        var collisionResults = [];
         var resetState = 0;
 
         allEnemies.every(function(enemy, index, array) {
-           collisionResults = enemy.testCollision(enemy);
+            collisionResults = enemy.testCollision(enemy);
 
             if (collisionResults[0] !== -1) delBullets.push(collisionResults[0]);
 
@@ -232,7 +231,7 @@ var Engine = (function(global) {
 
             player = new Player();
 
-            hud = new HUD(0,3);
+            hud = new HUD(0, 3);
 
             createEnemies();
             createBarriers();
@@ -251,7 +250,7 @@ var Engine = (function(global) {
             allEnemies.forEach(function(enemy) {
                 enemy.x = (91 + 135 * (x % 8));
                 enemy.y = calcHeight(x);
-                x++
+                x++;
             });
 
             Start = 0;

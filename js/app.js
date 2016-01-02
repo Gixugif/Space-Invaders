@@ -48,13 +48,9 @@ Enemy.prototype.update = function(dt) {
      * not updating at exacty the same time. This will keep
      * them aligned.
      */
-    if (this.num > 7) {
-        this.x = allEnemies[this.num - 8].x;
-    }
+    if (this.num > 7) this.x = allEnemies[this.num - 8].x;
 
-    if (this.num % 8 > 0) {
-        this.x = allEnemies[this.num - 1].x + 135
-    }
+    if (this.num % 8 > 0) this.x = allEnemies[this.num - 1].x + 135;
 };
 
 /** Draw the enemy on the screen */
@@ -106,7 +102,7 @@ Enemy.prototype.destroy = function() {
  */
 Enemy.prototype.testCollision = function(enemy) {
 
-    var collisionNum = -1
+    var collisionNum = -1;
     var state = 0;
 
     bullets.forEach(function(bullet) {
@@ -169,7 +165,7 @@ var calcHeight = function(count) {
     } else if (count <= 48) {
         return 150 + (5 * 81);
     }
-}
+};
 
 
 /**
@@ -366,7 +362,7 @@ Bullet.prototype.testCollision = function(bullet) {
  * @param {int} posY - The barrier's position on the Y axis.
  */
 var Barrier = function(posX, posY) {
-    this.x = posX
+    this.x = posX;
     this.y = posY;
     this.width = 92;
     this.height = 69;
@@ -407,7 +403,7 @@ Barrier.prototype.render = function() {
 /** Damages a barrier */
 Barrier.prototype.damage = function() {
     this.health -= 1;
-}
+};
 
 
 /**
@@ -436,15 +432,15 @@ HUD.prototype.render = function(ctx) {
 };
 
 
-var createEnemies = function () {
+var createEnemies = function() {
     allEnemies = [];
     for (var x = 0; x < 41; x++) allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
-}
+};
 
-var createBarriers = function () {
+var createBarriers = function() {
     barriers = [];
-    for (var x = 0; x < 3; x++)  barriers[x] = new Barrier(230 + (x * 300), 725);
-}
+    for (var x = 0; x < 3; x++) barriers[x] = new Barrier(230 + (x * 300), 725);
+};
 
 /** Set up global values */
 var enemyDX = 0.3;
@@ -453,7 +449,7 @@ var Enemy_Pop = 41;
 
 var allEnemies;
 var barriers;
-var bullets = []
+var bullets = [];
 
 var player = new Player();
 var hud = new HUD(0, player.lives);
@@ -487,29 +483,34 @@ document.addEventListener('keydown', function(e) {
 function keyboard_module(onUpdate) {
     var kb = {};
     var unicode_mapping = {};
+    var key;
+
     document.onkeydown = function(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode
-        var key = getKey(unicode);
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+        key = getKey(unicode);
         kb[key] = true;
+
         if (onUpdate) {
             onUpdate(kb);
         }
-    }
+    };
 
     document.onkeyup = function(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode
-        var key = getKey(unicode);
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+        key = getKey(unicode);
+
         delete kb[key];
+
         if (onUpdate) {
             onUpdate(kb);
         }
-    }
+    };
 
     function getKey(unicode) {
         if (unicode_mapping[unicode]) {
-            var key = unicode_mapping[unicode];
+            key = unicode_mapping[unicode];
         } else {
-            var key = unicode_mapping[unicode] = String.fromCharCode(unicode);
+            key = unicode_mapping[unicode] = String.fromCharCode(unicode);
         }
         return key;
     }
