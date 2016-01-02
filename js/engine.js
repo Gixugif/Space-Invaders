@@ -43,6 +43,7 @@ var Engine = (function(global) {
          */
         player.handleInput(null);
 
+        /** Don't start until the player moves */
         if (Start === 1) {
             update(dt);
             var state = collisions();
@@ -56,10 +57,8 @@ var Engine = (function(global) {
          */
         lastTime = now;
 
-        if (state > 0) {
-            init(state);
-        }
-
+        //** reset if in reset state */
+        if (state > 0) init(state);
 
         /**
          * Use the browser's requestAnimationFrame function to call this
@@ -92,7 +91,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /**
@@ -177,34 +175,24 @@ var Engine = (function(global) {
         allEnemies.every(function(enemy, index, array) {
            collisionResults = enemy.testCollision(enemy);
 
-            if (collisionResults[0] !== -1) {
-            delBullets.push(collisionResults[0]);
-           }
+            if (collisionResults[0] !== -1) delBullets.push(collisionResults[0]);
 
-           if (collisionResults[1] !== 0) {
-                resetState = collisionResults[1];
-           }
+            if (collisionResults[1] !== 0) resetState = collisionResults[1];
 
-           /**
-            * We don't want to lose lives for every enemy past the bottom of the screen
-            * so we need to break ouf of the loop once we've found one.
-            */
-           if (resetState !== 0) {
-            return false;
-           } else return true;
+            /**
+             * We don't want to lose lives for every enemy past the bottom of the screen
+             * so we need to break ouf of the loop once we've found one.
+             */
+            return (resetState !== 0) ? false : true;
+
         });
 
         bullets.forEach(function(bullet) {
             collisionResults = bullet.testCollision(bullet);
 
-           if (collisionResults[0] !== -1) {
-            delBullets.push(collisionResults[0]);
-           }
+            if (collisionResults[0] !== -1) delBullets.push(collisionResults[0]);
 
-           if (collisionResults[1] !== 0) {
-                resetState = collisionResults[1];
-           }
-
+            if (collisionResults[1] !== 0) resetState = collisionResults[1];
         });
 
         deleteBullets(delBullets);
@@ -236,6 +224,7 @@ var Engine = (function(global) {
         if (state === 1) {
             /** Game Over */
 
+            /** Init globals */
             enemyDX = 0.3;
             allEnemies = [];
             barriers = [];
@@ -245,17 +234,20 @@ var Engine = (function(global) {
 
             hud = new HUD(0,3);
 
-            for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
-            for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
+            createEnemies();
+            createBarriers();
+
             Start = 0;
         } else if (state === 2) {
             /** Lost Life */
             var x = 0;
 
+            /** Move player back to original position */
             player.x = (500) + (77 / 2);
             player.y = 820;
             player.shot = false;
 
+            /** Move enemies back to original positions */
             allEnemies.forEach(function(enemy) {
                 enemy.x = (91 + 135 * (x % 8));
                 enemy.y = calcHeight(x);
@@ -266,17 +258,20 @@ var Engine = (function(global) {
         } else if (state === 3) {
             /** Round Won */
 
+            /** Init globals */
             enemyDX = 0.3;
             allEnemies = [];
             barriers = [];
             Enemy_Pop = 40;
 
+            /** Move player back to original position */
             player.x = (500) + (77 / 2);
             player.y = 820;
             player.shot = false;
 
-            for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
-            for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
+            createEnemies();
+            createBarriers();
+
             Start = 0;
         }
 

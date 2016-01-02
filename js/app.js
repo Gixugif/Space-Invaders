@@ -2,6 +2,7 @@ var enemyDX = 0.3;
 var Start = 0;
 var Enemy_Pop = 40;
 
+
 /**
  * Represents an enemy.
  * @constructor
@@ -38,7 +39,8 @@ Enemy.prototype.update = function(dt) {
 
         /**
          * We move everyone vertically all at once for
-         * simplicity.
+         * simplicity, and move them away from the edge
+         * so they only move down once.
          */
         allEnemies.forEach(function(enemy) {
             enemy.y += enemy.dy;
@@ -152,6 +154,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
     return [collisionNum, state];
 };
+
 
 /**
  * Helper function for finding the vertical placing
@@ -411,6 +414,7 @@ Barrier.prototype.damage = function() {
     this.health -= 1;
 }
 
+
 /**
  * Represents the HUD.
  * @constructor
@@ -437,19 +441,26 @@ HUD.prototype.render = function(ctx) {
 };
 
 
-var allEnemies = [];
-var barriers = [];
+var createEnemies = function () {
+    allEnemies = [];
+    for (var x = 0; x < 41; x++) allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
+}
+
+var createBarriers = function () {
+    barriers = [];
+    for (var x = 0; x < 3; x++)  barriers[x] = new Barrier(230 + (x * 300), 725);
+}
+
+var allEnemies;
+var barriers;
 var bullets = []
 
 var player = new Player();
 var hud = new HUD(0, player.lives);
 
-for (var x = 0; x < 41; x++) {
-    allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
-}
-for (var x = 0; x < 3; x++) {
-    barriers[x] = new Barrier(230 + (x * 300), 725)
-}
+createEnemies();
+createBarriers();
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
