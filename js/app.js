@@ -65,6 +65,7 @@ Enemy.prototype.render = function() {
     }
 };
 
+/** Calculates the enemy's movement */
 Enemy.prototype.move = function() {
     this.dx = (enemyDX * this.population);
 
@@ -83,6 +84,17 @@ Enemy.prototype.shoot = function() {
         bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
     }
 };
+
+/** Removes an enemy from the game */
+Enemy.prototype.destroy = function() {
+    this.display = false;
+    hud.score += 100;
+
+    /** Slowly speed up as enemies are defeated */
+    enemyDX = enemyDX * 1.07;
+
+    Enemy_Pop -= 1;
+}
 
 /**
  * Test to see if the enemy is in contact with any other
@@ -103,12 +115,10 @@ Enemy.prototype.testCollision = function(enemy) {
         if (bullet.type === "player" && enemy.display === true) {
 
             if (collisionTest(enemy, bullet)) {
+                enemy.destroy();
                 player.shot = false;
-                enemy.display = false;
                 collisionNum = bullet.num;
-                hud.score += 100;
-                enemyDX = enemyDX * 1.07;
-                Enemy_Pop -= 1;
+
             }
         }
 
@@ -117,10 +127,9 @@ Enemy.prototype.testCollision = function(enemy) {
             barriers.forEach(function(barrier) {
 
                 if (collisionTest(enemy, barrier) && barrier.display === true) {
-                    enemy.display = false;
+                    enemy.destroy();
                     barrier.health -= 1;
-                    enemyDX = enemyDX * 1.07;
-                    Enemy_Pop -= 1;
+
                 }
             });
         }
@@ -128,11 +137,9 @@ Enemy.prototype.testCollision = function(enemy) {
     });
 
     if (collisionTest(enemy, player) && enemy.display === true) {
-        enemy.display = false;
+        enemy.destroy();
         player.lives -= 1;
         hud.lives -= 1;
-        enemyDX = enemyDX * 1.07;
-        Enemy_Pop -= 1;
 
         if (player.lives > 0) {
             state = 2;
@@ -208,6 +215,10 @@ Player.prototype.update = function(dt) {
         this.x = 1060;
     }
 };
+
+Player.prototype.move = function() {
+
+}
 
 /** Draw the player to the screen. */
 Player.prototype.render = function() {
