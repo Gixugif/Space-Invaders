@@ -1,8 +1,3 @@
-var enemyDX = 0.3;
-var Start = 0;
-var Enemy_Pop = 41;
-
-
 /**
  * Represents an enemy.
  * @constructor
@@ -450,6 +445,11 @@ var createBarriers = function () {
     barriers = [];
     for (var x = 0; x < 3; x++)  barriers[x] = new Barrier(230 + (x * 300), 725);
 }
+
+/** Set up global values */
+var enemyDX = 0.3;
+var Start = 0;
+var Enemy_Pop = 41;
 
 var allEnemies;
 var barriers;
