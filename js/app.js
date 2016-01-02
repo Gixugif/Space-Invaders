@@ -1,6 +1,6 @@
 var enemyDX = 0.3;
 var Start = 0;
-var Enemy_Pop = 40;
+var Enemy_Pop = 41;
 
 
 /**
