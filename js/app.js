@@ -94,7 +94,7 @@ Enemy.prototype.destroy = function() {
     enemyDX = enemyDX * 1.07;
 
     Enemy_Pop -= 1;
-}
+};
 
 /**
  * Test to see if the enemy is in contact with any other
@@ -128,8 +128,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
                 if (collisionTest(enemy, barrier) && barrier.display === true) {
                     enemy.destroy();
-                    barrier.health -= 1;
-
+                    barrier.damage();
                 }
             });
         }
@@ -138,24 +137,11 @@ Enemy.prototype.testCollision = function(enemy) {
 
     if (collisionTest(enemy, player) && enemy.display === true) {
         enemy.destroy();
-        player.lives -= 1;
-        hud.lives -= 1;
-
-        if (player.lives > 0) {
-            state = 2;
-        } else {
-            state = 1;
-        }
+        state = player.destroy();
     }
 
     if ((enemy.y + 70) > 900 && enemy.display === true) {
-        player.lives -= 1;
-        hud.lives -= 1;
-        if (player.lives > 0) {
-            state = 2;
-        } else {
-            state = 1;
-        }
+        state = player.destroy();
     }
 
     if (Enemy_Pop === 0) {
@@ -163,7 +149,7 @@ Enemy.prototype.testCollision = function(enemy) {
     }
 
     return [collisionNum, state];
-}
+};
 
 /**
  * Helper function for finding the vertical placing
@@ -218,7 +204,7 @@ Player.prototype.update = function(dt) {
 
 Player.prototype.move = function() {
 
-}
+};
 
 /** Draw the player to the screen. */
 Player.prototype.render = function() {
@@ -259,6 +245,20 @@ Player.prototype.shoot = function() {
         this.shot = true;
     }
 };
+
+/* Destroys the player */
+Player.prototype.destroy = function() {
+    player.lives -= 1;
+    hud.lives -= 1;
+
+    /** determine if game over or just normal reset */
+    if (player.lives > 0) {
+        return 2;
+    } else {
+        return 1;
+    }
+};
+
 
 /**
  * Represents a bullet.
@@ -307,7 +307,7 @@ Bullet.prototype.move = function() {
     } else if (this.type === "enemy") {
         this.dy = 200;
     }
-}
+};
 
 /**
  * Tests whether the bullet is in contact with any
@@ -334,15 +334,8 @@ Bullet.prototype.testCollision = function(bullet) {
     if (bullet.type === 'enemy' && bullet.y > 700) {
 
         if (collisionTest(player, bullet)) {
-            player.lives -= 1;
-            hud.lives -= 1;
+            state = player.destroy();
             collisionNum = bullet.num;
-
-            if (player.lives > 0) {
-                state = 2;
-            } else {
-                state = 1;
-            }
         }
     }
 
@@ -351,7 +344,7 @@ Bullet.prototype.testCollision = function(bullet) {
         barriers.forEach(function(barrier) {
 
             if (collisionTest(bullet, barrier) && barrier.display === true) {
-                barrier.health -= 1;
+                barrier.damage();
                 collisionNum = bullet.num;
 
                 if (bullet.type === "player") {
@@ -362,7 +355,7 @@ Bullet.prototype.testCollision = function(bullet) {
     }
 
     return [collisionNum, state];
-}
+};
 
 
 /**
@@ -410,6 +403,11 @@ Barrier.prototype.render = function() {
         ctx.drawImage(Resources.get(this.sprite), this.x + (92 - this.width), this.y + (69 - this.height));
     }
 };
+
+/** Damages a barrier */
+Barrier.prototype.damage = function() {
+    this.health -= 1;
+}
 
 /**
  * Represents the HUD.
