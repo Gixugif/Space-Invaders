@@ -33,6 +33,7 @@ Enemy.prototype.update = function(dt) {
      * If it does go reach the the edge, reverse direction.
      */
     if ((this.x >= 1200 - 91 || this.x <= 0) && this.display === true) {
+        console.log(enemyDX);
         enemyDX = -enemyDX;
 
         /**
@@ -41,6 +42,7 @@ Enemy.prototype.update = function(dt) {
          */
         allEnemies.forEach(function(enemy) {
             enemy.y += enemy.dy;
+            enemy.x += enemyDX * enemy.population * dt;
         });
     }
 
@@ -248,11 +250,11 @@ Player.prototype.shoot = function() {
 
 /* Destroys the player */
 Player.prototype.destroy = function() {
-    player.lives -= 1;
+    this.lives -= 1;
     hud.lives -= 1;
 
     /** determine if game over or just normal reset */
-    if (player.lives > 0) {
+    if (this.lives > 0) {
         return 2;
     } else {
         return 1;
