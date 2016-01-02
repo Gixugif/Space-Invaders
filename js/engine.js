@@ -236,7 +236,7 @@ var Engine = (function(global) {
         if (state === 1) {
             /** Game Over */
 
-            ENEMY_DX = 0.3;
+            enemyDX = 0.3;
             allEnemies = [];
             barriers = [];
             Enemy_Pop = 40;
@@ -265,7 +265,7 @@ var Engine = (function(global) {
         } else if (state === 3) {
             /** Round Won */
 
-            ENEMY_DX = 0.3;
+            enemyDX = 0.3;
             allEnemies = [];
             barriers = [];
             Enemy_Pop = 40;
