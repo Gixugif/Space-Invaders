@@ -254,6 +254,7 @@ var Engine = (function(global) {
 
             player.x = (500) + (77 / 2);
             player.y = 820;
+            player.shot = false;
 
             allEnemies.forEach(function(enemy) {
                 enemy.x = (91 + 135 * (x % 8));
@@ -272,6 +273,7 @@ var Engine = (function(global) {
 
             player.x = (500) + (77 / 2);
             player.y = 820;
+            player.shot = false;
 
             for (var x = 0; x < 41; x++) { allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x); }
             for (var x = 0; x < 3; x++) {barriers[x] = new Barrier(230 + (x * 300),725)}
