@@ -76,7 +76,7 @@ Enemy.prototype.shoot = function() {
     var rand = Math.floor(Math.random() * 2500 + 1);
 
     if (rand === this.num && this.display === true) {
-        bullets.push(new Bullet(this.x, this.y, "enemy", bullets.length));
+        bullets.push(new Bullet(this.x, this.y, 'enemy', bullets.length));
     }
 };
 
@@ -107,7 +107,7 @@ Enemy.prototype.testCollision = function(enemy) {
 
     bullets.forEach(function(bullet) {
 
-        if (bullet.type === "player" && enemy.display === true) {
+        if (bullet.type === 'player' && enemy.display === true) {
 
             if (collisionTest(enemy, bullet)) {
                 enemy.destroy();
@@ -237,7 +237,7 @@ Player.prototype.handleInput = function(input) {
  */
 Player.prototype.shoot = function() {
     if (this.shot === false) {
-        bullets.push(new Bullet(this.x + this.width / 2, this.y - this.height + 30, "player", bullets.length));
+        bullets.push(new Bullet(this.x + this.width / 2, this.y - this.height + 30, 'player', bullets.length));
         this.shot = true;
     }
 };
@@ -298,9 +298,9 @@ Bullet.prototype.render = function() {
  * type.
  */
 Bullet.prototype.move = function() {
-    if (this.type === "player") {
+    if (this.type === 'player') {
         this.dy = -200;
-    } else if (this.type === "enemy") {
+    } else if (this.type === 'enemy') {
         this.dy = 200;
     }
 };
@@ -322,7 +322,7 @@ Bullet.prototype.testCollision = function(bullet) {
     if (bullet.y > 900 || bullet.y < 0) {
         collisionNum = bullet.num;
 
-        if (bullet.type === "player") {
+        if (bullet.type === 'player') {
             player.shot = false;
         }
     }
@@ -343,7 +343,7 @@ Bullet.prototype.testCollision = function(bullet) {
                 barrier.damage();
                 collisionNum = bullet.num;
 
-                if (bullet.type === "player") {
+                if (bullet.type === 'player') {
                     player.shot = false;
                 }
             }
@@ -421,11 +421,11 @@ var HUD = function(score, lives) {
 
 /** Draw the HUD to the screen */
 HUD.prototype.render = function(ctx) {
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "white";
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'white';
 
-    var scoreText = "SCORE: " + this.score;
-    var livesText = "LIVES: " + this.lives;
+    var scoreText = 'SCORE: ' + this.score;
+    var livesText = 'LIVES: ' + this.lives;
 
     ctx.fillText(scoreText, 10, 30);
     ctx.fillText(livesText, 1100, 30);
