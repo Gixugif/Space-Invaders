@@ -215,8 +215,10 @@ var calcHeight = function(count) {
  * Represents the player
  * @constructor
  */
-var Player = function() {
+var Player = function(posX, posY, startdy, startdx, shipW, shipH, shipSprite) {
     'use strict';
+
+    Ship.call(this,posX,posY,startdy,startdx,shipW,shipH,shipSprite);
 
     this.lives = 3;
     this.score = 0;
