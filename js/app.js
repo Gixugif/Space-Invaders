@@ -1,27 +1,58 @@
+/**************************************************
+** Title: app.js                                 **
+** Date: May 2016                                **
+** Author: Jeffrey Zic                           **
+** Description: Contains all the objects and     **
+** methods needed for running the game Space     **
+** Invaders.                                     **
+**************************************************/
+
+/**
+ * Represents a generic ship.
+ * @constructor
+ * @param {int} posX - The X position of the ship.
+ * @param {int} posY - The Y position of the ship.
+ * @param {int} startdy - The change in y pos each frame.
+ * @param {int} startdx - The change in x pos each frame.
+ * @param {int} shipW - The width of the ship's sprite.
+ * @param {int} shipH - The height of the ship's sprite.
+ * @param {String} shipSpirte - the URL of the ship's sprite.
+ */
+var Ship = function(posX,posY,startdy,startdx,shipW,shipH,shipSprite) {
+    'use strict';
+
+    this.x = posX;
+    this.y = posY;
+    this.dy = startdy;
+    this.dx = startdx;
+    this.width = shipW;
+    this.height = shipH;
+    this.sprite = shipSprite;
+};
+
 /**
  * Represents an enemy.
  * @constructor
  * @param {int} posX - the X position of the enemy.
  * @param {int} posY - the Y position of the enemy.
  */
-var Enemy = function(posX, posY, num) {
-    this.x = posX;
-    this.y = posY;
-    this.dy = 20;
-    this.dx = 1;
+var Enemy = function(num) {
+    'use strict';
+
     this.num = num;
     this.population = 56;
-    this.width = 65;
-    this.height = 70;
     this.display = true;
-    this.sprite = 'images/enemy1.png';
 };
+
+Enemy.__proto__ = Ship;
 
 /**
  * Update the enemy's position.
  * @param {int} dt - a time delta between ticks.
  */
 Enemy.prototype.update = function(dt) {
+    'use strict';
+
     this.x += this.dx * dt;
 
     /**
@@ -55,6 +86,8 @@ Enemy.prototype.update = function(dt) {
 
 /** Draw the enemy on the screen */
 Enemy.prototype.render = function() {
+    'use strict';
+
     if (this.display === true) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -62,12 +95,15 @@ Enemy.prototype.render = function() {
 
 /** Calculates the enemy's movement */
 Enemy.prototype.move = function() {
+    'use strict';
+
     this.dx = (enemyDX * this.population);
 
 };
 
 /** Add a bullet to the game when an enemy shoots */
 Enemy.prototype.shoot = function() {
+    'use strict';
 
     /**
      * Balance enemy shooting by having each enemy only have a small
@@ -82,6 +118,8 @@ Enemy.prototype.shoot = function() {
 
 /** Removes an enemy from the game */
 Enemy.prototype.destroy = function() {
+    'use strict';
+
     this.display = false;
     hud.score += 100;
 
@@ -101,6 +139,7 @@ Enemy.prototype.destroy = function() {
  * current state of the game.
  */
 Enemy.prototype.testCollision = function(enemy) {
+    'use strict';
 
     var collisionNum = -1;
     var state = 0;
@@ -152,6 +191,8 @@ Enemy.prototype.testCollision = function(enemy) {
  * for enemies.
  */
 var calcHeight = function(count) {
+    'use strict';
+
     if (count <= 8) {
         return 50;
     } else if (count <= 16) {
@@ -173,13 +214,8 @@ var calcHeight = function(count) {
  * @constructor
  */
 var Player = function() {
-    this.sprite = 'images/player.png';
-    this.x = (500) + (77 / 2);
-    this.y = 820;
-    this.dx = 0;
-    this.dy = 0;
-    this.width = 77;
-    this.height = 52;
+    'use strict';
+
     this.lives = 3;
     this.score = 0;
     this.shot = false;
@@ -190,6 +226,8 @@ var Player = function() {
  * @param {int} dt - a time delta between ticks.
  */
 Player.prototype.update = function(dt) {
+    'use strict';
+
     this.x += this.dx * dt;
     if (this.x < 20) {
         this.x = 20;
@@ -204,6 +242,8 @@ Player.prototype.move = function() {
 
 /** Draw the player to the screen. */
 Player.prototype.render = function() {
+    'use strict';
+
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -213,6 +253,7 @@ Player.prototype.render = function() {
  * @param {[str]} input - array of keys being pressed.
  */
 Player.prototype.handleInput = function(input) {
+    'use strict';
 
     if (keyboard['\%']) {
         this.dx = -100;
@@ -236,6 +277,8 @@ Player.prototype.handleInput = function(input) {
  * it from shooting until the bullet is gone.
  */
 Player.prototype.shoot = function() {
+    'use strict';
+
     if (this.shot === false) {
         bullets.push(new Bullet(this.x + this.width / 2, this.y - this.height + 30, 'player', bullets.length));
         this.shot = true;
@@ -244,6 +287,8 @@ Player.prototype.shoot = function() {
 
 /* Destroys the player */
 Player.prototype.destroy = function() {
+    'use strict';
+
     this.lives -= 1;
     hud.lives -= 1;
 
@@ -268,6 +313,8 @@ Player.prototype.destroy = function() {
  * Makes it easy to delete it when necessary.
  */
 var Bullet = function(posX, posY, type, num) {
+    'use strict';
+
     this.x = posX;
     this.y = posY;
     this.dx = 0;
@@ -285,11 +332,15 @@ var Bullet = function(posX, posY, type, num) {
  * @param {int} dt - a time delta between ticks.
  */
 Bullet.prototype.update = function(dt) {
+    'use strict';
+
     this.y += this.dy * dt;
 };
 
 /** Draws the player to the screen. */
 Bullet.prototype.render = function() {
+    'use strict';
+
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -298,6 +349,8 @@ Bullet.prototype.render = function() {
  * type.
  */
 Bullet.prototype.move = function() {
+    'use strict';
+
     if (this.type === 'player') {
         this.dy = -200;
     } else if (this.type === 'enemy') {
@@ -315,6 +368,7 @@ Bullet.prototype.move = function() {
  * current state of the game.
  */
 Bullet.prototype.testCollision = function(bullet) {
+    'use strict';
 
     var collisionNum = -1;
     var state = 0;
@@ -362,6 +416,8 @@ Bullet.prototype.testCollision = function(bullet) {
  * @param {int} posY - The barrier's position on the Y axis.
  */
 var Barrier = function(posX, posY) {
+    'use strict';
+
     this.x = posX;
     this.y = posY;
     this.width = 92;
@@ -374,6 +430,8 @@ var Barrier = function(posX, posY) {
 
 /** Update the barrier's sprite. */
 Barrier.prototype.update = function() {
+    'use strict';
+
     if (this.health === 0) {
         this.display = false;
     } else if (this.health <= 2) {
@@ -393,6 +451,8 @@ Barrier.prototype.update = function() {
 
 /** Draw the barrier to the screen. */
 Barrier.prototype.render = function() {
+    'use strict';
+
     if (this.display === true) {
         // we take the difference between the current and original dimensions in order
         // to stop them from shifting around
@@ -402,6 +462,8 @@ Barrier.prototype.render = function() {
 
 /** Damages a barrier */
 Barrier.prototype.damage = function() {
+    'use strict';
+
     this.health -= 1;
 };
 
@@ -415,12 +477,16 @@ Barrier.prototype.damage = function() {
  * to display.
  */
 var HUD = function(score, lives) {
+    'use strict';
+
     this.score = score;
     this.lives = lives;
 };
 
 /** Draw the HUD to the screen */
 HUD.prototype.render = function(ctx) {
+    'use strict';
+
     ctx.font = '20px Arial';
     ctx.fillStyle = 'white';
 
@@ -433,11 +499,15 @@ HUD.prototype.render = function(ctx) {
 
 
 var createEnemies = function() {
+    'use strict';
+
     allEnemies = [];
-    for (var x = 0; x < 41; x++) allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x);
+    for (var x = 0; x < 41; x++) allEnemies[x] = new Enemy(91 + 135 * (allEnemies.length % 8), calcHeight(x), x, 20, 1, 65, 70, 'images/enemy1.png');
 };
 
 var createBarriers = function() {
+    'use strict';
+
     barriers = [];
     for (var x = 0; x < 3; x++) barriers[x] = new Barrier(230 + (x * 300), 725);
 };
@@ -451,7 +521,7 @@ var allEnemies;
 var barriers;
 var bullets = [];
 
-var player = new Player();
+var player = new Player((500) + (77 / 2), 820, 0, 0, 77, 52, 'images/player.png');
 var hud = new HUD(0, player.lives);
 
 createEnemies();
@@ -481,6 +551,8 @@ document.addEventListener('keydown', function(e) {
  * @returns {Object} They keys currently pressed down.
  */
 function keyboard_module(onUpdate) {
+    'use strict';
+
     var kb = {};
     var unicode_mapping = {};
     var key;
@@ -528,6 +600,8 @@ function keyboard_module(onUpdate) {
  * intersecting or not.
  */
 function collisionTest(obj1, obj2) {
+    'use strict';
+
     if (obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
         obj1.y < obj2.y + obj2.height &&
@@ -545,6 +619,8 @@ function collisionTest(obj1, obj2) {
  * to delete.
  */
 function deleteBullets(nums) {
+    'use strict';
+
     nums.forEach(function(num) {
         bullets.splice(num, 1);
     });
