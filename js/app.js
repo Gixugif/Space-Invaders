@@ -36,8 +36,10 @@ var Ship = function(posX,posY,startdy,startdx,shipW,shipH,shipSprite) {
  * @param {int} posX - the X position of the enemy.
  * @param {int} posY - the Y position of the enemy.
  */
-var Enemy = function(num) {
+var Enemy = function(posX,posY,num,startdy,startdx,shipW,shipH,shipSprite) {
     'use strict';
+
+    Ship.call(this,posX,posY,startdy,startdx,shipW,shipH,shipSprite);
 
     this.num = num;
     this.population = 56;
