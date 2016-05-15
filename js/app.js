@@ -46,8 +46,6 @@ var Enemy = function(posX,posY,num,startdy,startdx,shipW,shipH,shipSprite) {
     this.display = true;
 };
 
-Enemy.__proto__ = Ship;
-
 /**
  * Update the enemy's position.
  * @param {int} dt - a time delta between ticks.
