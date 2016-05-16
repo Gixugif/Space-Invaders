@@ -228,10 +228,10 @@ var calcHeight = function(count) {
  * @param {int} playerH - The height of the player's sprite.
  * @param {String} playerSprite - the URL of the player's sprite.
  */
-var Player = function(posX, posY, startdy, startdx, shipW, shipH, shipSprite) {
+var Player = function(posX, posY, startdy, startdx, playerW, playerH, playerSprite) {
     'use strict';
 
-    Ship.call(this,posX,posY,startdy,startdx,shipW,shipH,shipSprite);
+    Ship.call(this,posX,posY,startdy,startdx,playerW,playerH,playerSprite);
 
     this.lives = 3;
     this.score = 0;
