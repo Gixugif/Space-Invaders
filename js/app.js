@@ -39,14 +39,14 @@ var Ship = function(posX,posY,startdy,startdx,shipW,shipH,shipSprite) {
  * @param {int} num - The index of the enemy
  * @param {int} startdy - The change in y pos each frame.
  * @param {int} startdx - The change in x pos each frame.
- * @param {int} shipW - The width of the enemy's sprite.
- * @param {int} shipH - The height of the enemy's sprite.
- * @param {String} shipSpirte - the URL of the enemy's sprite.
+ * @param {int} enemyW - The width of the enemy's sprite.
+ * @param {int} enemyH - The height of the enemy's sprite.
+ * @param {String} enemySpirte - the URL of the enemy's sprite.
  */
-var Enemy = function(posX,posY,num,startdy,startdx,shipW,shipH,shipSprite) {
+var Enemy = function(posX,posY,num,startdy,startdx,enemyW,enemyH,enemySprite) {
     'use strict';
 
-    Ship.call(this,posX,posY,startdy,startdx,shipW,shipH,shipSprite);
+    Ship.call(this,posX,posY,startdy,startdx,enemyW,enemyH,enemySprite);
 
     this.num = num;
     this.population = 56;
