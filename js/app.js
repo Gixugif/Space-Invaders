@@ -217,8 +217,16 @@ var calcHeight = function(count) {
 
 
 /**
- * Represents the player
+ * @calldesc Represents the player.
  * @constructor
+ * @augments Ship
+ * @param {int} posX - The X position of the player.
+ * @param {int} posY - The Y position of the player.
+ * @param {int} startdy - The change in y pos each frame.
+ * @param {int} startdx - The change in x pos each frame.
+ * @param {int} playerW - The width of the players's sprite.
+ * @param {int} playerH - The height of the player's sprite.
+ * @param {String} playerSprite - the URL of the player's sprite.
  */
 var Player = function(posX, posY, startdy, startdx, shipW, shipH, shipSprite) {
     'use strict';
