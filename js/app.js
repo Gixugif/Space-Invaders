@@ -31,10 +31,17 @@ var Ship = function(posX,posY,startdy,startdx,shipW,shipH,shipSprite) {
 };
 
 /**
- * Represents an enemy.
+ * @calldesc Represents an enemy.
  * @constructor
- * @param {int} posX - the X position of the enemy.
- * @param {int} posY - the Y position of the enemy.
+ * @augments Ship
+ * @param {int} posX - The X position of the enemy.
+ * @param {int} posY - The Y position of the enemy.
+ * @param {int} num - The index of the enemy
+ * @param {int} startdy - The change in y pos each frame.
+ * @param {int} startdx - The change in x pos each frame.
+ * @param {int} shipW - The width of the enemy's sprite.
+ * @param {int} shipH - The height of the enemy's sprite.
+ * @param {String} shipSpirte - the URL of the enemy's sprite.
  */
 var Enemy = function(posX,posY,num,startdy,startdx,shipW,shipH,shipSprite) {
     'use strict';
