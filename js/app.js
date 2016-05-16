@@ -41,7 +41,7 @@ var Ship = function(posX,posY,startdy,startdx,shipW,shipH,shipSprite) {
  * @param {int} startdx - The change in x pos each frame.
  * @param {int} enemyW - The width of the enemy's sprite.
  * @param {int} enemyH - The height of the enemy's sprite.
- * @param {String} enemySpirte - the URL of the enemy's sprite.
+ * @param {String} enemySprite - the URL of the enemy's sprite.
  */
 var Enemy = function(posX,posY,num,startdy,startdx,enemyW,enemyH,enemySprite) {
     'use strict';
